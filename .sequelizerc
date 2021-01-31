@@ -1,0 +1,11 @@
+const path = require("path")
+
+// Specify the paths to the orm directory where sequelize will generate the config, migrations, seeders, and models directories
+// npx sequelize-cli init will make the config, migrations, seeders, and models directories 
+
+module.exports = {
+    "config": path.resolve("src/orm/config", "config.js"),
+    "models-path": path.resolve("src/orm", "models"),
+    "seeders-path": path.resolve("src/orm", "seeders"),
+    "migrations-path": path.resolve("src/orm", "migrations")
+}
