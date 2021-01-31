@@ -32,7 +32,7 @@ module.exports = {
       ingredients: {
         allowNull: false,
         type: Sequelize.JSON,
-        field: ingredients,
+        field: "ingredients",
       },
       title: {
         allowNull: false,
@@ -42,19 +42,19 @@ module.exports = {
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE,
-        field: created_at,
+        field: "created_at",
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       },
       updatedAt: {
         allowNull: true,
         type: Sequelize.DATE,
-        field: updated_at,
+        field: "updated_at",
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       },
       deletedAt: {
         allowNull: true,
         type: Sequelize.DATE,
-        field: deleted_at,
+        field: "deleted_at",
       }
     });
   },

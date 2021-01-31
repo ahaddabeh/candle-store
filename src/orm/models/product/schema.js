@@ -24,7 +24,7 @@ module.exports = DataTypes => ({
     ingredients: {
         allowNull: false,
         type: DataTypes.JSON,
-        field: ingredients,
+        field: "ingredients",
     },
     title: {
         allowNull: false,

@@ -1,0 +1,359 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "categoryId": 4,
+      "title": "non autem in",
+      "ingredients": [
+        "sequi",
+        "neque",
+        "totam",
+        "voluptas"
+      ],
+      "price": "12.00",
+      "description": "quam non nostrum magni rerum blanditiis cum quia est accusantium quia possimus accusamus sunt et et occaecati quis consequuntur est consequatur iure ut corporis facilis voluptatibus tempore qui sequi commodi",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 2,
+      "categoryId": 1,
+      "title": "repellendus non earum",
+      "ingredients": [
+        "quis",
+        "est",
+        "vel",
+        "eveniet"
+      ],
+      "price": "11.00",
+      "description": "nemo qui deleniti dolorum sit repellat reiciendis rerum exercitationem eos et velit debitis consequatur totam illo facere perspiciatis accusamus non suscipit natus excepturi sapiente vel tempora id laudantium itaque sequi",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 3,
+      "categoryId": 12,
+      "title": "voluptatem quibusdam numquam",
+      "ingredients": [
+        "dicta",
+        "vitae",
+        "rerum"
+      ],
+      "price": "15.00",
+      "description": "eos animi ad magni occaecati sit quaerat nisi maiores vero consequuntur deserunt nostrum rerum recusandae autem voluptatum sit quo rerum velit est dolor veniam ipsum consequatur vero voluptas laborum id",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 4,
+      "categoryId": 11,
+      "title": "ipsam esse quibusdam",
+      "ingredients": [
+        "est",
+        "eius",
+        "dolorem"
+      ],
+      "price": "18.00",
+      "description": "veniam non qui illo nulla et autem accusantium ut accusamus nobis autem dolores possimus voluptates tenetur corrupti reprehenderit aut praesentium et optio beatae ad odio aut dolorem rerum non assumenda",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 5,
+      "categoryId": 14,
+      "title": "enim similique qui",
+      "ingredients": [
+        "ea",
+        "accusamus",
+        "tempora",
+        "aliquid"
+      ],
+      "price": "25.00",
+      "description": "non maxime voluptas dolorum molestias ex saepe ex voluptatibus ea facilis hic repellat suscipit sit et velit ipsum asperiores suscipit est molestiae suscipit quaerat voluptates in autem quae impedit nemo",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 6,
+      "categoryId": 8,
+      "title": "ut in et",
+      "ingredients": [
+        "magni",
+        "nostrum",
+        "minus"
+      ],
+      "price": "17.00",
+      "description": "eligendi vel doloribus ex odit rem dolores placeat architecto maiores ut omnis sint voluptate mollitia nisi est est quaerat porro facere rerum voluptas rem expedita velit aut ex consequatur ducimus",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 7,
+      "categoryId": 13,
+      "title": "et recusandae sunt",
+      "ingredients": [
+        "dicta",
+        "molestias",
+        "omnis",
+        "laborum"
+      ],
+      "price": "25.00",
+      "description": "fuga ut animi enim dolore et ut voluptatem quia magnam amet et sed odio atque porro incidunt sunt tempora nulla ab eveniet ut et explicabo exercitationem aut labore non nihil",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 8,
+      "categoryId": 1,
+      "title": "incidunt eveniet ducimus",
+      "ingredients": [
+        "non",
+        "tenetur",
+        "incidunt"
+      ],
+      "price": "13.00",
+      "description": "atque corrupti velit quia doloremque quibusdam deleniti accusamus qui dolorem dolorem rerum fugit dolor officiis quae quia omnis quia consectetur quae perspiciatis eum et et est tempore repellendus sit mollitia",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 9,
+      "categoryId": 12,
+      "title": "ea et aut",
+      "ingredients": [
+        "doloribus",
+        "enim",
+        "minus",
+        "accusantium"
+      ],
+      "price": "24.00",
+      "description": "vel recusandae libero rem quod fugiat veritatis sint reiciendis molestiae dignissimos qui laboriosam placeat rem et autem et consequatur est excepturi et voluptatem incidunt exercitationem id ipsa earum molestiae sunt",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 10,
+      "categoryId": 11,
+      "title": "explicabo omnis aut",
+      "ingredients": [
+        "ipsam",
+        "nisi",
+        "corporis",
+        "error",
+        "harum"
+      ],
+      "price": "14.00",
+      "description": "rerum laborum et sed repellat facere necessitatibus quas quod perferendis nostrum amet in neque quibusdam repudiandae illo officia sint et non quis natus non cum optio odit consectetur sed dolores",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 11,
+      "categoryId": 11,
+      "title": "ducimus placeat molestiae",
+      "ingredients": [
+        "dicta",
+        "rem",
+        "temporibus"
+      ],
+      "price": "20.00",
+      "description": "autem et cum omnis qui at qui deleniti temporibus nemo et ipsam esse omnis ex harum autem ea repellendus ut rerum aut ullam qui est saepe necessitatibus id cum voluptatem",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 12,
+      "categoryId": 8,
+      "title": "beatae praesentium voluptatum",
+      "ingredients": [
+        "harum",
+        "dolor",
+        "sequi"
+      ],
+      "price": "15.00",
+      "description": "sint cum laboriosam in architecto nisi enim repudiandae molestiae provident veritatis eius autem sit adipisci repellat doloremque amet et quae ut eius amet temporibus voluptas dolores ipsa officia quasi sit",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 13,
+      "categoryId": 5,
+      "title": "accusantium velit eos",
+      "ingredients": [
+        "eum",
+        "omnis",
+        "deleniti",
+        "nihil",
+        "aut"
+      ],
+      "price": "17.00",
+      "description": "eveniet exercitationem fugit ab ipsum amet temporibus sint repellat eaque a exercitationem aut minima animi eveniet quos non adipisci et ut eaque exercitationem cumque fugiat repudiandae qui quisquam consectetur atque",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 14,
+      "categoryId": 12,
+      "title": "vero quia blanditiis",
+      "ingredients": [
+        "quo",
+        "beatae",
+        "tempore"
+      ],
+      "price": "19.00",
+      "description": "a amet totam facere velit ut ratione quia iure et nam corporis sit numquam itaque doloribus sed eum accusantium ipsa eveniet labore dolorum ut possimus aut odio beatae ut quae",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 15,
+      "categoryId": 11,
+      "title": "ducimus ad unde",
+      "ingredients": [
+        "enim",
+        "sint",
+        "doloribus"
+      ],
+      "price": "16.00",
+      "description": "eum autem et natus rerum unde ipsa similique cupiditate impedit qui beatae voluptatem reprehenderit quia nesciunt sed eum et mollitia molestiae ipsa blanditiis neque culpa neque occaecati animi vero veritatis",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 16,
+      "categoryId": 15,
+      "title": "consequatur enim ea",
+      "ingredients": [
+        "quia",
+        "quas",
+        "molestias",
+        "eaque"
+      ],
+      "price": "22.00",
+      "description": "vel minima voluptatem rem ea adipisci necessitatibus mollitia corrupti ut ad minus veniam doloremque facere fugiat sint at provident veniam accusantium deserunt sint rerum eligendi reprehenderit consequatur quos magni eum",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 17,
+      "categoryId": 16,
+      "title": "consequuntur quis et",
+      "ingredients": [
+        "asperiores",
+        "itaque",
+        "doloremque"
+      ],
+      "price": "10.00",
+      "description": "quia et qui cum consequatur et eum autem mollitia omnis sed maiores tempora officia quis dicta fugit et ab praesentium eligendi aperiam est natus in eaque numquam earum voluptatem nulla",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 18,
+      "categoryId": 17,
+      "title": "mollitia neque facere",
+      "ingredients": [
+        "aut",
+        "reprehenderit",
+        "blanditiis",
+        "reprehenderit"
+      ],
+      "price": "20.00",
+      "description": "sit et qui deserunt dicta aut doloremque ab alias sed corrupti id iusto veniam repellendus rerum ipsam pariatur quos quae quo consequatur sed ducimus cupiditate maiores culpa repudiandae officia velit",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 19,
+      "categoryId": 2,
+      "title": "culpa reiciendis non",
+      "ingredients": [
+        "iusto",
+        "quia",
+        "officia",
+        "deleniti"
+      ],
+      "price": "13.00",
+      "description": "qui nihil sit eaque dolor dicta quae laudantium minus ad aperiam animi perferendis autem quisquam atque ea quibusdam repudiandae est occaecati vero enim quae tempora itaque quia et inventore possimus",
+      "image": "candle1.jpg"
+    },
+    {
+      "id": 20,
+      "categoryId": 7,
+      "title": "aut incidunt omnis",
+      "ingredients": [
+        "necessitatibus",
+        "nobis",
+        "accusamus",
+        "voluptas"
+      ],
+      "price": "10.00",
+      "description": "quo architecto natus quia ut est est culpa quia temporibus nam similique voluptatem temporibus nulla voluptatibus iusto nisi sed quis quam temporibus maiores voluptates itaque et quo qui non enim",
+      "image": "candle1.jpg"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "title": "voluptate quia nihil"
+    },
+    {
+      "id": 2,
+      "title": "vel tempore voluptate"
+    },
+    {
+      "id": 3,
+      "title": "est vel quis"
+    },
+    {
+      "id": 4,
+      "title": "alias est ut"
+    },
+    {
+      "id": 5,
+      "title": "voluptas reiciendis mollitia"
+    },
+    {
+      "id": 6,
+      "title": "cum et necessitatibus"
+    },
+    {
+      "id": 7,
+      "title": "quae necessitatibus inventore"
+    },
+    {
+      "id": 8,
+      "title": "aut nihil iusto"
+    },
+    {
+      "id": 9,
+      "title": "reprehenderit iusto et"
+    },
+    {
+      "id": 10,
+      "title": "fugit dolorum quo"
+    },
+    {
+      "id": 11,
+      "title": "vero laboriosam molestiae"
+    },
+    {
+      "id": 12,
+      "title": "est architecto dolorem"
+    },
+    {
+      "id": 13,
+      "title": "quos delectus vel"
+    },
+    {
+      "id": 14,
+      "title": "amet et explicabo"
+    },
+    {
+      "id": 15,
+      "title": "et vero in"
+    },
+    {
+      "id": 16,
+      "title": "qui consequatur illo"
+    },
+    {
+      "id": 17,
+      "title": "sint non suscipit"
+    },
+    {
+      "id": 18,
+      "title": "eius perspiciatis suscipit"
+    },
+    {
+      "id": 19,
+      "title": "eum tempore sed"
+    },
+    {
+      "id": 20,
+      "title": "cum impedit ea"
+    }
+  ]
+}
