@@ -1,1 +1,5 @@
 GET {{baseURL}}/products
+
+###
+
+GET {{baseURL}}/products/7

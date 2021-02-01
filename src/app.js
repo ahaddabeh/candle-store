@@ -10,6 +10,8 @@ const app = express();
 
 const createError = require("http-errors");
 
+// Once the application is started up, these static methods are added to the express response object (sendHttpSuccess, sendHttpError, sendHttpValidation)
+
 express.response.sendHttpSuccess = function (results, message = "OK", statusCode = 200) {
     // Custom success response
     return this.contentType("application/json").status(statusCode).send({ message, code: statusCode, error: false, results });
@@ -42,5 +44,5 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 
-
+// Gets exported to server.js
 module.exports = app;
