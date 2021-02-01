@@ -1,0 +1,8 @@
+{
+    "rest-client.environmentVariables": {
+        "$shared": {
+            "baseURL": "http://localhost:7210/api"
+        },
+        "sandbox": {}
+    }
+}

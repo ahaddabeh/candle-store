@@ -2,12 +2,15 @@ const path = require("path");
 const faker = require("faker");
 const fs = require("fs-extra");
 const { ko } = require("faker/lib/locales");
+const { get } = require("http");
 
 require("dotenv").config();
 
 const output = {
     products: [],
-    categories: []
+    categories: [],
+    // orders: [],
+    // users: []
 }
 
 const getRandomInclusive = (min, max) =>
@@ -39,11 +42,21 @@ const createProduct = () => ({
     image: "candle1.jpg"
 })
 
+// const createOrder = () => ({
+//     id: newId("orders"),
+//     status: getRandomInclusive(0, 1) === 1 ? "shipped" : "pending",
+//     total: faker.commerce.price(10, 100, 2),
+//     products: Array.from({ length: getRandomInclusive(1, 4) }, () => getRandomInclusive(1, 20))
+// })
+
 for (let i = 0; i < 20; i++) {
     output.categories.push(createCategory())
 }
 for (let i = 0; i < 20; i++) {
     output.products.push(createProduct())
+}
+for (let i = 0; i < 20; i++) {
+    output.orders.push(createOrder())
 }
 
 fs.writeFileSync(

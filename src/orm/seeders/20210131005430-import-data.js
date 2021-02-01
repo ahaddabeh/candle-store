@@ -27,8 +27,16 @@ module.exports = {
       }
     })
 
+    const categories = data.categories.map(category => {
+      return {
+        id: category.id,
+        title: category.title
+      }
+    })
+
     try {
       await queryInterface.bulkInsert("products", products, {})
+      await queryInterface.bulkInsert("categories", categories, {})
     } catch (error) {
       console.log(error)
     }
