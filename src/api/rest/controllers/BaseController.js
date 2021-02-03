@@ -4,13 +4,28 @@ class BaseController {
         this.modelName = model.name;
     }
 
+    // list = async (req, res) => {
+    //     try {
+    //         res.sendHttpSuccess(await this.model.findAll());
+    //     } catch (error) {
+    //         res.sendHttpError(404, `${this.modelName}.list()`, error);
+    //     }
+    // }
+
     list = async (req, res) => {
+        const page = +req.query.page;
+        const limit = 3
+        const offset = page * limit
         try {
-            res.sendHttpSuccess(await this.model.findAll());
+            res.sendHttpSuccess(await this.model.findAndCountAll({
+                limit: limit,
+                offset: offset
+            }))
         } catch (error) {
-            res.sendHttpError(404, `${this.modelName}.list()`, error);
+
         }
     }
+
     getById = async (req, res) => {
         try {
             res.sendHttpSuccess(await this.model.findByPk(req.params.id));
