@@ -36,6 +36,7 @@ fs.readdirSync(__dirname)
   })
   .forEach(file => {
     const model = require(resolveModelPath(file))(sequelize, Sequelize.DataTypes);
+    // Making an instance of each model
     db[model.name] = model;
   });
 

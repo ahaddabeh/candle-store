@@ -1,0 +1,27 @@
+GET {{baseURL}}/categories
+
+###
+
+GET {{baseURL}}/categories/7
+
+###
+
+POST {{baseURL}}/categories
+Content-Type: application/json
+
+{
+    "title": "Hatem Spice"
+}
+
+###
+
+PUT {{baseURL}}/categories/17
+Content-Type: application/json
+
+{
+    "title": "Candy Sprinkles"
+}
+
+###
+
+DELETE {{baseURL}}/categories/12

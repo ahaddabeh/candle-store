@@ -2,4 +2,32 @@ GET {{baseURL}}/products
 
 ###
 
+# For findandCountAll 
 GET {{baseURL}}/products/7
+
+###
+
+POST {{baseURL}}/products
+Content-Type: application/json
+
+{
+      "categoryId": 4,
+      "price": 12,
+      "description": "quam non nostrum magni rerum blanditiis cum quia est accusantium quia possimus accusamus sunt et et occaecati quis consequuntur est consequatur iure ut corporis facilis voluptatibus tempore qui sequi commodi",
+      "image": "candle1.jpg",
+      "ingredients": [
+        "sequi",
+        "neque",
+        "totam",
+        "carnitas"
+      ],
+      "title": "non autem in"
+    }
+
+###
+
+PUT {{baseURL}}/products/17
+
+###
+
+DELETE {{baseURL}}/products/13

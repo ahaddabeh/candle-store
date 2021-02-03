@@ -27,12 +27,13 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true
   });
 
-  const methods = require("./methods");
+  const methods = require("./methods")(DataTypes);
   for (const attr in methods) {
     Product.prototype[attr] = methods[attr];
   }
 
-  const statics = require("./statics");
+  // This is the same as saying statics(Product);
+  const statics = require("./statics")(Product);
   for (const attr in statics) {
     Product[attr] = statics[attr];
   }
