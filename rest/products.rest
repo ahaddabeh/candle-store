@@ -1,4 +1,4 @@
-GET {{baseURL}}/products?page=4
+GET {{baseURL}}/products?page=1&size=10&cid=2
 
 ###
 

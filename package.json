@@ -32,7 +32,8 @@
     "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "sequelize": "^6.3.5",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "stripe": "^8.135.0"
   },
   "nodemonConfig": {
     "restartable": "rs",

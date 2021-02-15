@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     Category.prototype[attr] = methods[attr];
   }
 
-  const statics = require("./statics");
+  const statics = require("./statics")(Category);
   for (const attr in statics) {
     Category[attr] = statics[attr];
   }

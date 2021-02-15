@@ -1,0 +1,18 @@
+POST {{baseURL}}/cart/checkout
+Content-Type: application/json
+
+{
+    "customer": {
+        "name": "Alaa Haddabeh",
+        "email": "testing@example.com",
+        "description": "My First Test Customer (created for API docs)"
+    },
+    "paymentMethod": {
+        "card": {
+            "number": "4242424242424242",
+            "exp_month": 2,
+            "exp_year": 2022,
+            "cvc": "314"
+        }
+    }
+}

@@ -13,16 +13,18 @@ class BaseController {
     // }
 
     list = async (req, res) => {
-        const page = +req.query.page;
-        const limit = 3
-        const offset = page * limit
         try {
-            res.sendHttpSuccess(await this.model.findAndCountAll({
-                limit: limit,
-                offset: offset
-            }))
+            const where = {};
+            if (req.query.cid) {
+                where.categoryId = req.query.cid
+            }
+            const options = {
+                limit: req.query.size || null,
+                where: where
+            }
+            res.sendHttpSuccess(await this.model.findWithCount(req.query.page, options))
         } catch (error) {
-
+            res.sendHttpError(404, `${this.modelName}.list()`, error);
         }
     }
 
