@@ -10,28 +10,18 @@ class ShoppingCartController {
 
     checkout = async (req, res) => {
         try {
-            // Because of our paranoid setting, we have a deleted_at timestamp. We didn't completely delete the instance, we did a "soft delete"
-            const customer = await stripe.customers.create(req.body.customer)
-            const paymentMethod = await stripe.paymentMethods.create({ type: 'card', ...req.body.paymentMethod });
-            await stripe.paymentMethods.attach(paymentMethod.id, { customer: customer.id })
-
-            const paymentIntent = await stripe.paymentIntents.create({
-                customer: customer.id,
-                payment_method: paymentMethod.id,
-                capture_method: "manual",
-                amount: 20 * 100,
-                currency: 'usd',
-                payment_method_types: ['card'],
-            });
-
-            const confirmed = await stripe.paymentIntents.confirm(paymentIntent.id);
-            const response = await stripe.paymentIntents.capture(paymentIntent.id);
-            res.sendHttpSuccess({ customer, paymentMethod, paymentIntent });
-
+            const result = await CheckoutService.checkout(req);
+            res.sendHttpSuccess(result);
         } catch (error) {
             res.sendHttpError(404, "ShoppingCart controller checkout()", error);
         }
     }
+    //     try {
+    //         // Because of our paranoid setting, we have a deleted_at timestamp. We didn't completely delete the instance, we did a "soft delete"
+
+    //         res.sendHttpSuccess({ customer, paymentMethod, paymentIntent });
+
+    // }
 }
 
 module.exports = ShoppingCartController;

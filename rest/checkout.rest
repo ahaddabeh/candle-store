@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "customer": {
-        "name": "Alaa Haddabeh",
+        "name": "Ahmad Haddabeh",
         "email": "testing@example.com",
         "description": "My First Test Customer (created for API docs)"
     },
@@ -14,5 +14,19 @@ Content-Type: application/json
             "exp_year": 2022,
             "cvc": "314"
         }
-    }
+    },
+    "cartItems": [
+        {
+            "id": 4,
+            "price": 12.00,
+            "name": "MidSummer's Night",
+            "quantity": 1
+        },
+        {
+            "id": 5,
+            "price": 15.00,
+            "name": "Pink Sands",
+            "quantity": 2
+        }
+    ]
 }
