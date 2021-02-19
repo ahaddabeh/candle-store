@@ -2,558 +2,759 @@
   "products": [
     {
       "id": 1,
-      "categoryId": 2,
-      "title": "sed amet dolor",
+      "categoryId": 17,
+      "title": "totam inventore nihil",
       "ingredients": [
-        "omnis",
-        "enim",
-        "dolores",
-        "velit"
+        "et",
+        "et",
+        "nemo"
       ],
       "price": "21.00",
-      "description": "nemo voluptate ad id delectus vel ullam animi eveniet voluptatem nihil vel quo illo voluptate maxime quia at eum ea itaque repellat est laborum est necessitatibus et voluptas quia vero",
+      "description": "aliquid non distinctio natus distinctio voluptatem aut nisi non sed expedita occaecati tempora perferendis id ex laudantium et molestiae voluptatem qui accusamus aut ducimus consequatur dignissimos blanditiis unde quibusdam enim",
       "image": "candle1.jpg"
     },
     {
       "id": 2,
-      "categoryId": 4,
-      "title": "provident iure distinctio",
+      "categoryId": 2,
+      "title": "minus fugit eligendi",
       "ingredients": [
-        "fugit",
-        "ut",
-        "nemo"
+        "quod",
+        "eveniet",
+        "non",
+        "esse"
       ],
-      "price": "24.00",
-      "description": "et non aut laborum quod maiores dolores voluptatem voluptatum qui porro doloremque perferendis quia nesciunt nam assumenda asperiores quia vel reprehenderit vel voluptas ex optio laudantium eum doloremque aliquam autem",
+      "price": "15.00",
+      "description": "delectus praesentium expedita id nihil reprehenderit harum adipisci qui ut perspiciatis rerum ea facere corrupti nihil et quo incidunt voluptatum est sed neque laborum sunt mollitia nesciunt in quasi hic",
       "image": "candle1.jpg"
     },
     {
       "id": 3,
-      "categoryId": 5,
-      "title": "nihil eum ad",
+      "categoryId": 17,
+      "title": "laboriosam voluptatem itaque",
       "ingredients": [
-        "dolores",
-        "recusandae",
-        "aut",
+        "impedit",
+        "sit",
+        "et",
         "et"
       ],
-      "price": "21.00",
-      "description": "exercitationem magni voluptatum adipisci aperiam vitae qui doloribus libero quasi unde occaecati non nemo et consequatur quisquam consequuntur molestias perspiciatis error excepturi repellat et quis ut autem praesentium et quis",
+      "price": "18.00",
+      "description": "laudantium omnis vel voluptas repellendus necessitatibus et non enim laboriosam porro eos ut voluptatem ea ducimus et placeat odio est qui quasi non architecto rem non consequatur in libero impedit",
       "image": "candle1.jpg"
     },
     {
       "id": 4,
-      "categoryId": 4,
-      "title": "ducimus illo aperiam",
+      "categoryId": 19,
+      "title": "dolore sunt non",
       "ingredients": [
-        "enim",
-        "et",
-        "modi"
+        "tenetur",
+        "ut",
+        "qui"
       ],
-      "price": "22.00",
-      "description": "aut rerum quos nisi non debitis commodi quis eos et voluptatem itaque asperiores excepturi voluptatem inventore quae non rerum nobis reiciendis et est unde ut iure iure autem et ipsam",
+      "price": "24.00",
+      "description": "dignissimos dolor sit quia aperiam enim excepturi dicta aut aut inventore laborum consequuntur accusamus eum atque nihil eum labore consectetur voluptatem adipisci adipisci pariatur porro quasi aperiam labore eos ex",
       "image": "candle1.jpg"
     },
     {
       "id": 5,
-      "categoryId": 9,
-      "title": "asperiores ipsa quo",
+      "categoryId": 14,
+      "title": "provident alias natus",
       "ingredients": [
-        "distinctio",
-        "error",
-        "eos",
-        "eaque",
-        "fuga"
+        "nisi",
+        "rerum",
+        "quam",
+        "adipisci",
+        "ipsam"
       ],
-      "price": "10.00",
-      "description": "provident nobis velit quod ut sequi enim magni neque impedit qui totam beatae animi tempore architecto voluptatibus neque qui aut porro blanditiis animi quis accusantium accusantium qui rerum reiciendis error",
+      "price": "21.00",
+      "description": "nihil consequatur quidem molestiae deleniti odio nostrum dolor quam recusandae commodi aut ipsa doloremque eos iusto iste aut totam nam delectus quasi quidem earum temporibus omnis quia voluptas sit consequatur",
       "image": "candle1.jpg"
     },
     {
       "id": 6,
-      "categoryId": 1,
-      "title": "iste corrupti recusandae",
+      "categoryId": 9,
+      "title": "cumque debitis quo",
       "ingredients": [
-        "aut",
-        "ut",
-        "quam",
-        "est"
+        "est",
+        "architecto",
+        "enim",
+        "iure",
+        "id"
       ],
-      "price": "18.00",
-      "description": "eligendi ut molestiae est deserunt ut enim quisquam numquam sapiente nobis et sit architecto molestiae at sint nihil id accusamus omnis dignissimos reprehenderit sed deserunt id dolores adipisci deserunt rerum",
+      "price": "11.00",
+      "description": "ea animi odio ea praesentium minus architecto distinctio totam doloribus et dolores quis amet quia non necessitatibus dolorem ut tempore quaerat tempore qui ab cupiditate quae est non earum nostrum",
       "image": "candle1.jpg"
     },
     {
       "id": 7,
-      "categoryId": 3,
-      "title": "nulla excepturi voluptatem",
+      "categoryId": 19,
+      "title": "est soluta odit",
       "ingredients": [
-        "vitae",
-        "voluptas",
-        "voluptas",
-        "fuga",
-        "voluptas"
+        "saepe",
+        "autem",
+        "nisi",
+        "similique",
+        "vel"
       ],
-      "price": "17.00",
-      "description": "sed sit facere voluptatibus et consectetur nemo molestiae assumenda tempore cupiditate quae architecto pariatur vero sed quam quasi eius sed nostrum doloremque architecto sint voluptatem culpa atque facere eveniet excepturi",
+      "price": "25.00",
+      "description": "quia voluptatem et amet eum ut id vero modi natus mollitia ea voluptas est corrupti non quia illo nostrum qui reprehenderit et minima quaerat dolorem facilis aut iste ipsum maxime",
       "image": "candle1.jpg"
     },
     {
       "id": 8,
-      "categoryId": 11,
-      "title": "aliquid sed magni",
+      "categoryId": 1,
+      "title": "cupiditate autem ad",
       "ingredients": [
-        "et",
-        "est",
-        "corporis",
-        "optio",
-        "voluptatibus"
+        "necessitatibus",
+        "autem",
+        "quos"
       ],
-      "price": "12.00",
-      "description": "qui ratione qui vel quia iusto sed repellat quo recusandae alias quod error dolores nostrum quis deleniti cum culpa in vel sapiente culpa enim et aut sed aut nemo dolore",
+      "price": "21.00",
+      "description": "autem doloremque quo corrupti ab nostrum ut velit pariatur molestiae inventore et non nulla consectetur enim impedit rerum ut ut est quas est a aut hic rerum enim doloremque ut",
       "image": "candle1.jpg"
     },
     {
       "id": 9,
-      "categoryId": 14,
-      "title": "molestiae nam illo",
+      "categoryId": 16,
+      "title": "corporis sint vero",
       "ingredients": [
-        "sit",
-        "sed",
+        "hic",
+        "unde",
+        "libero",
         "enim",
-        "a"
+        "voluptas"
       ],
-      "price": "15.00",
-      "description": "non provident adipisci debitis natus rerum natus rem voluptas voluptatem aut adipisci laudantium architecto quia voluptas in ratione alias sit tempore ullam sint illum aut voluptatem quia omnis sunt perferendis",
+      "price": "22.00",
+      "description": "nobis numquam delectus aut illo dignissimos voluptatem molestiae quis et accusamus provident exercitationem vel repellat facilis dolorum magni nulla et quis quia atque quaerat consectetur culpa necessitatibus quam aliquid dicta",
       "image": "candle1.jpg"
     },
     {
       "id": 10,
-      "categoryId": 19,
-      "title": "magnam numquam ipsam",
+      "categoryId": 16,
+      "title": "quia ea provident",
       "ingredients": [
-        "incidunt",
-        "sunt",
-        "error"
+        "maiores",
+        "maxime",
+        "cumque"
       ],
       "price": "14.00",
-      "description": "aut at consequuntur aut magni qui doloremque ipsam quia eos facere eos nisi illo officiis in perspiciatis hic cupiditate deleniti quisquam voluptatum vel ducimus quaerat autem harum quis perspiciatis est",
+      "description": "culpa quisquam rerum odio dolorum qui reiciendis provident et magnam saepe occaecati odit ut dolor autem sed deleniti dolorum non dicta quia molestias et magni porro et illum aliquid facere",
       "image": "candle1.jpg"
     },
     {
       "id": 11,
-      "categoryId": 13,
-      "title": "reprehenderit quas minima",
+      "categoryId": 3,
+      "title": "accusantium quia recusandae",
       "ingredients": [
-        "impedit",
         "ut",
-        "aut",
-        "vel"
+        "perspiciatis",
+        "numquam",
+        "illo"
       ],
-      "price": "19.00",
-      "description": "fuga maxime enim harum esse accusantium asperiores natus laborum vel modi consequuntur similique blanditiis est fugit et sed voluptatem atque iure impedit voluptatum ut dolor consectetur est aliquam ipsa sint",
+      "price": "17.00",
+      "description": "et laboriosam voluptates saepe qui tenetur eos laudantium omnis optio magnam at repellendus est similique dicta ut ducimus a saepe dignissimos non ipsam iste officia autem esse sapiente debitis dicta",
       "image": "candle1.jpg"
     },
     {
       "id": 12,
-      "categoryId": 18,
-      "title": "est alias asperiores",
+      "categoryId": 10,
+      "title": "in esse eveniet",
       "ingredients": [
-        "consectetur",
-        "qui",
-        "voluptas",
-        "rerum",
-        "eum"
+        "ea",
+        "quidem",
+        "fugiat"
       ],
-      "price": "12.00",
-      "description": "aliquam repellendus sed ea ut omnis nemo dolores quas autem quisquam consequatur et est omnis velit dolores esse accusantium architecto et recusandae molestiae autem veritatis sit commodi iure animi quam",
+      "price": "25.00",
+      "description": "aperiam earum dolorem ea molestiae labore rerum itaque facere velit illum impedit qui quisquam sed maxime recusandae quae quod perferendis quis non modi vel aut et quia cum architecto molestiae",
       "image": "candle1.jpg"
     },
     {
       "id": 13,
       "categoryId": 13,
-      "title": "quisquam hic sequi",
+      "title": "voluptatem quidem fuga",
       "ingredients": [
-        "quo",
-        "libero",
-        "qui",
-        "commodi"
+        "omnis",
+        "et",
+        "laborum",
+        "quia"
       ],
       "price": "19.00",
-      "description": "debitis dolores magni deleniti quo inventore soluta excepturi quas nobis veniam neque aut aperiam cupiditate unde doloribus sit impedit in veniam nobis nulla voluptates illo debitis illo fuga consectetur illo",
+      "description": "et vel eum ut eos ducimus est et consectetur architecto error dignissimos voluptate nam nesciunt ut perferendis dolorem veritatis quidem qui cumque vitae sequi ab blanditiis ducimus suscipit tenetur autem",
       "image": "candle1.jpg"
     },
     {
       "id": 14,
-      "categoryId": 5,
-      "title": "magnam sint occaecati",
+      "categoryId": 18,
+      "title": "eum quis autem",
       "ingredients": [
-        "molestiae",
-        "ipsum",
-        "eum"
+        "placeat",
+        "aut",
+        "dolores",
+        "fuga",
+        "ea"
       ],
-      "price": "12.00",
-      "description": "voluptate beatae odio itaque deleniti rerum aut amet nesciunt voluptate architecto iste quidem reiciendis ipsum ratione molestiae ab dolore est ut aut neque vitae corporis aperiam laboriosam tenetur qui voluptatibus",
+      "price": "19.00",
+      "description": "facilis sequi mollitia eius eum est error hic reprehenderit eligendi tempore eum a est at voluptas sequi pariatur veniam excepturi eaque facilis iste alias molestias quaerat qui cupiditate officiis ipsum",
       "image": "candle1.jpg"
     },
     {
       "id": 15,
-      "categoryId": 14,
-      "title": "consectetur quia consequatur",
+      "categoryId": 1,
+      "title": "aliquam ipsa et",
       "ingredients": [
-        "voluptatem",
-        "rerum",
-        "minima",
-        "et",
-        "voluptates"
+        "nulla",
+        "beatae",
+        "atque",
+        "aut"
       ],
-      "price": "12.00",
-      "description": "dolorem velit dolorem consectetur ratione nisi et odio sed perspiciatis accusamus quo debitis autem ut repellendus pariatur illum perspiciatis non aut perferendis odio doloremque quae sapiente iste ad sequi enim",
+      "price": "17.00",
+      "description": "sint at sequi nihil exercitationem deserunt hic aliquid aut qui debitis reprehenderit sequi veritatis eum enim repellat ut necessitatibus voluptatibus ipsa pariatur consequuntur sunt enim dolor quia omnis ipsum aut",
       "image": "candle1.jpg"
     },
     {
       "id": 16,
-      "categoryId": 6,
-      "title": "sit totam reprehenderit",
+      "categoryId": 16,
+      "title": "sit maxime voluptas",
       "ingredients": [
-        "molestiae",
-        "amet",
-        "voluptate",
-        "ipsa"
+        "numquam",
+        "dolores",
+        "expedita",
+        "aut",
+        "eum"
       ],
-      "price": "22.00",
-      "description": "enim quo rerum dolorem illo deleniti qui tempora quo ipsum architecto eius fuga et eius voluptatibus labore qui temporibus vel recusandae aperiam quaerat libero tempora amet explicabo alias voluptas nihil",
+      "price": "12.00",
+      "description": "et nulla quia excepturi dolore enim dolore dolorum omnis ea dolores sit mollitia assumenda velit veniam accusamus ut itaque aliquid in voluptatibus asperiores sed iste doloremque possimus corrupti nemo est",
       "image": "candle1.jpg"
     },
     {
       "id": 17,
-      "categoryId": 16,
-      "title": "aut et libero",
+      "categoryId": 14,
+      "title": "laborum et voluptatibus",
       "ingredients": [
-        "culpa",
-        "ut",
-        "debitis"
+        "iure",
+        "qui",
+        "est",
+        "provident"
       ],
-      "price": "21.00",
-      "description": "debitis dolorem voluptas maiores fugit perspiciatis sequi vel sed qui iste voluptatem voluptate sed ut id possimus omnis excepturi ut aliquam laborum dolor impedit et eligendi saepe suscipit qui sint",
+      "price": "12.00",
+      "description": "provident fugit odio placeat minima qui voluptas accusamus dolor eos incidunt tenetur non vel tempore totam consequuntur adipisci omnis et officia unde iste excepturi tempora iste quam cumque sunt dolorem",
       "image": "candle1.jpg"
     },
     {
       "id": 18,
-      "categoryId": 18,
-      "title": "est quisquam eligendi",
+      "categoryId": 4,
+      "title": "illum rerum velit",
       "ingredients": [
-        "non",
+        "eveniet",
         "laboriosam",
-        "quod"
+        "minima"
       ],
-      "price": "11.00",
-      "description": "placeat quam rerum dolorum neque eos et laudantium aut eaque necessitatibus fuga exercitationem similique sunt distinctio officiis sunt delectus fugiat illum iure dolorem aut eaque vitae aut eaque esse quia",
+      "price": "19.00",
+      "description": "enim repellendus dolores quo eos nesciunt sit quisquam officia perferendis itaque in qui omnis eius enim ipsam et officia eos non perferendis libero libero vero voluptatem sed sed rerum sit",
       "image": "candle1.jpg"
     },
     {
       "id": 19,
-      "categoryId": 11,
-      "title": "veniam sit aut",
+      "categoryId": 1,
+      "title": "veniam pariatur illum",
       "ingredients": [
-        "a",
-        "voluptas",
-        "et",
-        "ut",
-        "sit"
+        "ullam",
+        "ea",
+        "nostrum",
+        "optio",
+        "voluptates"
       ],
-      "price": "19.00",
-      "description": "asperiores eos et laudantium natus voluptatibus debitis ut dolorum natus quo amet dignissimos ratione exercitationem voluptas aut a qui et quisquam impedit accusamus enim et repellat ipsa et voluptatem nemo",
+      "price": "10.00",
+      "description": "qui aut nobis aut atque totam eum aut corporis explicabo iure aperiam occaecati expedita voluptatem consequatur est repellendus repudiandae deserunt ea fuga sunt eos ut qui repudiandae deleniti ut ad",
       "image": "candle1.jpg"
     },
     {
       "id": 20,
-      "categoryId": 8,
-      "title": "iusto perspiciatis ducimus",
+      "categoryId": 13,
+      "title": "assumenda ut aut",
       "ingredients": [
-        "esse",
-        "aut",
-        "ut",
-        "aliquid",
-        "voluptas"
+        "corporis",
+        "dignissimos",
+        "non",
+        "iure"
       ],
-      "price": "25.00",
-      "description": "eum odio sequi consequatur ea ab explicabo qui natus consequatur quia commodi autem tempore voluptates libero sit saepe dolores ut molestiae vel veritatis repellat in tempore enim ut pariatur porro",
+      "price": "18.00",
+      "description": "iste praesentium aspernatur nesciunt laudantium eligendi illum fugit possimus eum ipsa qui alias nam molestiae veritatis perferendis omnis molestiae voluptatem eveniet ex blanditiis iusto unde illo provident facere eius impedit",
       "image": "candle1.jpg"
     }
   ],
   "categories": [
     {
       "id": 1,
-      "title": "eveniet architecto excepturi"
+      "title": "ex dolores quos"
     },
     {
       "id": 2,
-      "title": "aspernatur consequatur inventore"
+      "title": "minima rerum consequatur"
     },
     {
       "id": 3,
-      "title": "eveniet tempora maiores"
+      "title": "autem voluptas ut"
     },
     {
       "id": 4,
-      "title": "porro molestiae impedit"
+      "title": "voluptatibus sit similique"
     },
     {
       "id": 5,
-      "title": "voluptas quidem sint"
+      "title": "quidem omnis voluptas"
     },
     {
       "id": 6,
-      "title": "esse omnis sit"
+      "title": "ut quibusdam provident"
     },
     {
       "id": 7,
-      "title": "eligendi quis itaque"
+      "title": "rerum officia placeat"
     },
     {
       "id": 8,
-      "title": "dolores distinctio quidem"
+      "title": "ut quisquam voluptatibus"
     },
     {
       "id": 9,
-      "title": "fugit doloremque dolores"
+      "title": "atque molestiae saepe"
     },
     {
       "id": 10,
-      "title": "perferendis est sit"
+      "title": "dicta ut laborum"
     },
     {
       "id": 11,
-      "title": "et ipsum explicabo"
+      "title": "voluptatum temporibus quia"
     },
     {
       "id": 12,
-      "title": "molestiae at ipsa"
+      "title": "eos aperiam commodi"
     },
     {
       "id": 13,
-      "title": "omnis recusandae sit"
+      "title": "et deleniti eum"
     },
     {
       "id": 14,
-      "title": "placeat officiis porro"
+      "title": "possimus accusamus occaecati"
     },
     {
       "id": 15,
-      "title": "eligendi modi dignissimos"
+      "title": "perspiciatis dolorem quia"
     },
     {
       "id": 16,
-      "title": "numquam fugiat ut"
+      "title": "quaerat nemo praesentium"
     },
     {
       "id": 17,
-      "title": "doloribus reprehenderit quia"
+      "title": "ut omnis a"
     },
     {
       "id": 18,
-      "title": "quisquam quibusdam eos"
+      "title": "asperiores explicabo inventore"
     },
     {
       "id": 19,
-      "title": "consequatur non ut"
+      "title": "praesentium dolorem voluptate"
     },
     {
       "id": 20,
-      "title": "cupiditate ducimus repellat"
+      "title": "aut quasi praesentium"
     }
   ],
   "orders": [
     {
       "id": 1,
-      "status": "pending",
-      "total": "94.00",
-      "products": [
-        11,
-        2,
-        3,
-        9
+      "customer_id": 10,
+      "status": true,
+      "total": "18.00",
+      "cart_items": [
+        13,
+        18,
+        12
       ]
     },
     {
       "id": 2,
-      "status": "shipped",
-      "total": "94.00",
-      "products": [
-        14,
-        13,
-        8
-      ]
-    },
-    {
-      "id": 3,
-      "status": "shipped",
-      "total": "47.00",
-      "products": [
-        19
-      ]
-    },
-    {
-      "id": 4,
-      "status": "pending",
-      "total": "13.00",
-      "products": [
-        1,
-        3
-      ]
-    },
-    {
-      "id": 5,
-      "status": "shipped",
-      "total": "83.00",
-      "products": [
+      "customer_id": 13,
+      "status": true,
+      "total": "69.00",
+      "cart_items": [
         7
       ]
     },
     {
+      "id": 3,
+      "customer_id": 17,
+      "status": true,
+      "total": "76.00",
+      "cart_items": [
+        5,
+        1,
+        10,
+        6
+      ]
+    },
+    {
+      "id": 4,
+      "customer_id": 5,
+      "status": true,
+      "total": "83.00",
+      "cart_items": [
+        16
+      ]
+    },
+    {
+      "id": 5,
+      "customer_id": 5,
+      "status": false,
+      "total": "64.00",
+      "cart_items": [
+        11,
+        11
+      ]
+    },
+    {
       "id": 6,
-      "status": "pending",
-      "total": "75.00",
-      "products": [
+      "customer_id": 8,
+      "status": true,
+      "total": "35.00",
+      "cart_items": [
         15,
-        7,
+        8,
         17
       ]
     },
     {
       "id": 7,
-      "status": "pending",
-      "total": "51.00",
-      "products": [
-        3,
-        5
+      "customer_id": 7,
+      "status": false,
+      "total": "45.00",
+      "cart_items": [
+        3
       ]
     },
     {
       "id": 8,
-      "status": "shipped",
-      "total": "55.00",
-      "products": [
-        6,
-        6,
-        6,
-        9
+      "customer_id": 20,
+      "status": true,
+      "total": "53.00",
+      "cart_items": [
+        12,
+        14,
+        2
       ]
     },
     {
       "id": 9,
-      "status": "shipped",
-      "total": "27.00",
-      "products": [
-        16,
-        16
-      ]
-    },
-    {
-      "id": 10,
-      "status": "pending",
-      "total": "76.00",
-      "products": [
-        10,
-        9,
-        5,
+      "customer_id": 4,
+      "status": true,
+      "total": "68.00",
+      "cart_items": [
+        7,
+        2,
+        11,
         18
       ]
     },
     {
+      "id": 10,
+      "customer_id": 11,
+      "status": true,
+      "total": "70.00",
+      "cart_items": [
+        6,
+        5
+      ]
+    },
+    {
       "id": 11,
-      "status": "shipped",
-      "total": "12.00",
-      "products": [
-        10,
-        7
+      "customer_id": 12,
+      "status": true,
+      "total": "65.00",
+      "cart_items": [
+        13,
+        3
       ]
     },
     {
       "id": 12,
-      "status": "pending",
-      "total": "40.00",
-      "products": [
-        9
+      "customer_id": 12,
+      "status": true,
+      "total": "25.00",
+      "cart_items": [
+        4,
+        12,
+        2
       ]
     },
     {
       "id": 13,
-      "status": "pending",
-      "total": "60.00",
-      "products": [
-        5,
-        17,
-        4,
-        17
-      ]
-    },
-    {
-      "id": 14,
-      "status": "shipped",
-      "total": "40.00",
-      "products": [
-        16,
-        1
-      ]
-    },
-    {
-      "id": 15,
-      "status": "pending",
-      "total": "57.00",
-      "products": [
-        18,
-        7
-      ]
-    },
-    {
-      "id": 16,
-      "status": "shipped",
-      "total": "79.00",
-      "products": [
-        20
-      ]
-    },
-    {
-      "id": 17,
-      "status": "shipped",
-      "total": "46.00",
-      "products": [
-        1
-      ]
-    },
-    {
-      "id": 18,
-      "status": "shipped",
+      "customer_id": 1,
+      "status": false,
       "total": "29.00",
-      "products": [
+      "cart_items": [
+        19,
         17,
         2,
         18
       ]
     },
     {
-      "id": 19,
-      "status": "shipped",
-      "total": "24.00",
-      "products": [
-        17,
-        3,
+      "id": 14,
+      "customer_id": 3,
+      "status": true,
+      "total": "25.00",
+      "cart_items": [
         20,
-        16
+        17,
+        4
+      ]
+    },
+    {
+      "id": 15,
+      "customer_id": 15,
+      "status": true,
+      "total": "86.00",
+      "cart_items": [
+        20,
+        3,
+        9
+      ]
+    },
+    {
+      "id": 16,
+      "customer_id": 9,
+      "status": true,
+      "total": "92.00",
+      "cart_items": [
+        4,
+        13
+      ]
+    },
+    {
+      "id": 17,
+      "customer_id": 3,
+      "status": true,
+      "total": "86.00",
+      "cart_items": [
+        7,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 18,
+      "customer_id": 14,
+      "status": true,
+      "total": "31.00",
+      "cart_items": [
+        15,
+        20
+      ]
+    },
+    {
+      "id": 19,
+      "customer_id": 11,
+      "status": false,
+      "total": "14.00",
+      "cart_items": [
+        1
       ]
     },
     {
       "id": 20,
-      "status": "pending",
-      "total": "99.00",
-      "products": [
-        6,
-        11,
-        17,
-        19
+      "customer_id": 13,
+      "status": true,
+      "total": "33.00",
+      "cart_items": [
+        18,
+        7
       ]
+    }
+  ],
+  "customers": [
+    {
+      "id": 1,
+      "first_name": "Teagan",
+      "last_name": "Kunde",
+      "email": "Emory81@yahoo.com",
+      "phone": "715.791.3194 x7544",
+      "shipping_address": "906 Thompson Course",
+      "billing_address": "479 Howe View"
+    },
+    {
+      "id": 2,
+      "first_name": "Kristian",
+      "last_name": "Gorczany",
+      "email": "Margie65@gmail.com",
+      "phone": "1-930-782-4689 x96412",
+      "shipping_address": "439 Estevan Harbor",
+      "billing_address": "097 Parisian Roads"
+    },
+    {
+      "id": 3,
+      "first_name": "Vicky",
+      "last_name": "Roberts",
+      "email": "Adella.Haag@yahoo.com",
+      "phone": "1-362-763-3626 x60845",
+      "shipping_address": "498 Carson Flats",
+      "billing_address": "019 Denesik Prairie"
+    },
+    {
+      "id": 4,
+      "first_name": "Brock",
+      "last_name": "Hoppe",
+      "email": "Enola66@gmail.com",
+      "phone": "1-213-821-6259 x0015",
+      "shipping_address": "062 Kane Shores",
+      "billing_address": "814 Telly Prairie"
+    },
+    {
+      "id": 5,
+      "first_name": "Trevion",
+      "last_name": "Howell",
+      "email": "Natasha_Gutmann@yahoo.com",
+      "phone": "(200) 960-1776 x773",
+      "shipping_address": "503 Homenick Wall",
+      "billing_address": "76584 Ebert Summit"
+    },
+    {
+      "id": 6,
+      "first_name": "Marion",
+      "last_name": "Douglas",
+      "email": "Clinton.Botsford38@hotmail.com",
+      "phone": "(250) 516-7006",
+      "shipping_address": "07903 Vesta Falls",
+      "billing_address": "037 Pagac Valley"
+    },
+    {
+      "id": 7,
+      "first_name": "Roma",
+      "last_name": "Abbott",
+      "email": "Yvonne83@yahoo.com",
+      "phone": "508.958.4370 x355",
+      "shipping_address": "0576 Amelie Overpass",
+      "billing_address": "80467 Immanuel Mill"
+    },
+    {
+      "id": 8,
+      "first_name": "Griffin",
+      "last_name": "Heathcote",
+      "email": "Jarvis81@gmail.com",
+      "phone": "(971) 787-3962",
+      "shipping_address": "397 Lang Glen",
+      "billing_address": "9037 Conn Drives"
+    },
+    {
+      "id": 9,
+      "first_name": "Zakary",
+      "last_name": "Daugherty",
+      "email": "Glenna82@hotmail.com",
+      "phone": "1-713-990-3683 x10680",
+      "shipping_address": "4520 Imani Estate",
+      "billing_address": "46858 Ernser Row"
+    },
+    {
+      "id": 10,
+      "first_name": "Burdette",
+      "last_name": "Hayes",
+      "email": "Nathanael14@hotmail.com",
+      "phone": "535-918-2041",
+      "shipping_address": "473 Leonora Squares",
+      "billing_address": "6455 Kunze Mission"
+    },
+    {
+      "id": 11,
+      "first_name": "Zachary",
+      "last_name": "Ryan",
+      "email": "Barney_Skiles92@yahoo.com",
+      "phone": "(270) 888-3274 x52830",
+      "shipping_address": "27158 Schulist Forest",
+      "billing_address": "5161 Kassulke Mount"
+    },
+    {
+      "id": 12,
+      "first_name": "Haylie",
+      "last_name": "Blanda",
+      "email": "Pedro_Gleichner56@yahoo.com",
+      "phone": "644-451-5379",
+      "shipping_address": "4658 MacGyver Neck",
+      "billing_address": "75496 Reinger Place"
+    },
+    {
+      "id": 13,
+      "first_name": "Florencio",
+      "last_name": "Morar",
+      "email": "Elisa_Greenholt@gmail.com",
+      "phone": "546-280-1733",
+      "shipping_address": "08172 Toy Loop",
+      "billing_address": "06866 Mitchell Trace"
+    },
+    {
+      "id": 14,
+      "first_name": "Lolita",
+      "last_name": "Jenkins",
+      "email": "Lesley59@yahoo.com",
+      "phone": "298-512-6161 x59016",
+      "shipping_address": "47575 Hammes Walk",
+      "billing_address": "14252 Wunsch Walk"
+    },
+    {
+      "id": 15,
+      "first_name": "Lottie",
+      "last_name": "Renner",
+      "email": "Sallie60@yahoo.com",
+      "phone": "802-548-7458 x573",
+      "shipping_address": "511 Sophia Walk",
+      "billing_address": "66109 Elvera Parkway"
+    },
+    {
+      "id": 16,
+      "first_name": "Lauren",
+      "last_name": "Nikolaus",
+      "email": "Marilyne_Turcotte@yahoo.com",
+      "phone": "(562) 975-3291 x126",
+      "shipping_address": "274 Stokes Fall",
+      "billing_address": "340 Kuvalis Turnpike"
+    },
+    {
+      "id": 17,
+      "first_name": "Lydia",
+      "last_name": "Aufderhar",
+      "email": "Steve14@gmail.com",
+      "phone": "1-833-253-7619",
+      "shipping_address": "170 Carroll Vista",
+      "billing_address": "73270 Al Knoll"
+    },
+    {
+      "id": 18,
+      "first_name": "Mallie",
+      "last_name": "Shanahan",
+      "email": "Lesley_Parisian@gmail.com",
+      "phone": "(499) 408-0120 x5441",
+      "shipping_address": "144 Boehm River",
+      "billing_address": "790 Spinka Green"
+    },
+    {
+      "id": 19,
+      "first_name": "Kailee",
+      "last_name": "Daugherty",
+      "email": "Oleta.McDermott32@yahoo.com",
+      "phone": "353.942.9582",
+      "shipping_address": "33205 Rutherford Mountains",
+      "billing_address": "72365 Stehr Keys"
+    },
+    {
+      "id": 20,
+      "first_name": "Lester",
+      "last_name": "Lemke",
+      "email": "Sid72@yahoo.com",
+      "phone": "1-413-306-0229 x8583",
+      "shipping_address": "0554 Schumm Glen",
+      "billing_address": "06170 Everett Crest"
     }
   ]
 }

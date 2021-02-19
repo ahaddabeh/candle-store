@@ -34,9 +34,33 @@ module.exports = {
       }
     })
 
+    const orders = data.orders.map(order => {
+      return {
+        id: order.id,
+        customer_id: order.customer_id,
+        status: order.status,
+        total: order.total,
+        cart_items: JSON.stringify(order.cart_items)
+      }
+    })
+
+    const customers = data.customers.map(customer => {
+      return {
+        id: customer.id,
+        first_name: customer.first_name,
+        last_name: customer.last_name,
+        email: customer.email,
+        phone: customer.phone,
+        shipping_address: customer.shipping_address,
+        billing_address: customer.billing_address
+      }
+    })
+
     try {
       await queryInterface.bulkInsert("products", products, {})
       await queryInterface.bulkInsert("categories", categories, {})
+      await queryInterface.bulkInsert("orders", orders, {})
+      await queryInterface.bulkInsert("customers", customers, {})
     } catch (error) {
       console.log(error)
     }

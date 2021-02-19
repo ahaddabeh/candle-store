@@ -9,8 +9,8 @@ require("dotenv").config();
 const output = {
     products: [],
     categories: [],
-    // orders: [],
-    // users: []
+    orders: [],
+    customers: []
 }
 
 const getRandomInclusive = (min, max) =>
@@ -42,18 +42,32 @@ const createProduct = () => ({
     image: "candle1.jpg"
 })
 
-// const createOrder = () => ({
-//     id: newId("orders"),
-//     status: getRandomInclusive(0, 1) === 1 ? "shipped" : "pending",
-//     total: faker.commerce.price(10, 100, 2),
-//     products: Array.from({ length: getRandomInclusive(1, 4) }, () => getRandomInclusive(1, 20))
-// })
+const createOrder = () => ({
+    id: newId("orders"),
+    customer_id: getRandomInclusive(0, output.customers.length),
+    status: getRandomInclusive(0, 1) === 1 ? true : false,
+    total: faker.commerce.price(10, 100, 2),
+    cart_items: Array.from({ length: getRandomInclusive(1, 4) }, () => getRandomInclusive(1, output.products.length))
+})
+
+const createCustomer = () => ({
+    id: newId("customers"),
+    first_name: faker.name.firstName(),
+    last_name: faker.name.lastName(),
+    email: faker.internet.email(),
+    phone: faker.phone.phoneNumber(),
+    shipping_address: faker.address.streetAddress(),
+    billing_address: faker.address.streetAddress()
+})
 
 for (let i = 0; i < 20; i++) {
     output.categories.push(createCategory())
 }
 for (let i = 0; i < 20; i++) {
     output.products.push(createProduct())
+}
+for (let i = 0; i < 20; i++) {
+    output.customers.push(createCustomer())
 }
 for (let i = 0; i < 20; i++) {
     output.orders.push(createOrder())
