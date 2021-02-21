@@ -1,8 +1,6 @@
 "use strict"
 
-const { DataTypes } = require("sequelize/types")
-
-module.exports = ({
+module.exports = DataTypes => ({
     customerId: {
         allowNull: false,
         type: DataTypes.INTEGER,

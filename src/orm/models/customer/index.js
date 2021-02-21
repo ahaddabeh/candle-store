@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    static addScopes(models) {
+      // define scopes here
+    }
   };
   Customer.init(schema(DataTypes), {
     sequelize,
@@ -24,15 +27,15 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true
   });
 
-  const methods = require("./methods")(DataTypes);
-  for (const attr in methods) {
-    Customer.prototype[attr] = methods[attr];
-  }
+  // const methods = require("./methods")(DataTypes);
+  // for (const attr in methods) {
+  //   Customer.prototype[attr] = methods[attr];
+  // }
 
-  const statics = require("./statics")(Customer);
-  for (const attr in statics) {
-    Customer[attr] = statics[attr];
-  }
+  // const statics = require("./statics")(Customer);
+  // for (const attr in statics) {
+  //   Customer[attr] = statics[attr];
+  // }
 
   return Customer;
 };

@@ -47,8 +47,7 @@ module.exports = {
     const customers = data.customers.map(customer => {
       return {
         id: customer.id,
-        first_name: customer.first_name,
-        last_name: customer.last_name,
+        name: customer.name,
         email: customer.email,
         phone: customer.phone,
         shipping_address: customer.shipping_address,

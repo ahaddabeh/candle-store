@@ -1,15 +1,10 @@
 "use strict"
 
 module.exports = DataTypes => ({
-    firstName: {
+    ame: {
         allowNull: false,
         type: DataTypes.STRING(20),
-        field: "first_name"
-    },
-    lastName: {
-        allowNull: false,
-        type: DataTypes.STRING(20),
-        field: "last_name"
+        field: "name"
     },
     email: {
         allowNull: false,

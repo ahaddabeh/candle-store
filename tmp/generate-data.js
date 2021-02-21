@@ -52,8 +52,7 @@ const createOrder = () => ({
 
 const createCustomer = () => ({
     id: newId("customers"),
-    first_name: faker.name.firstName(),
-    last_name: faker.name.lastName(),
+    name: faker.name.findName(),
     email: faker.internet.email(),
     phone: faker.phone.phoneNumber(),
     shipping_address: faker.address.streetAddress(),

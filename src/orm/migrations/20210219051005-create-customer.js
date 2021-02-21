@@ -8,15 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
+      name: {
         allowNull: false,
         type: Sequelize.STRING(20),
-        field: "first_name"
-      },
-      lastName: {
-        allowNull: false,
-        type: Sequelize.STRING(20),
-        field: "last_name"
+        field: "name"
       },
       email: {
         allowNull: false,

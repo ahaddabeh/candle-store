@@ -4,8 +4,7 @@ Content-Type: application/json
 {
     "customer": {
         "name": "Ahmad Haddabeh",
-        "email": "testing@example.com",
-        "description": "My First Test Customer (created for API docs)"
+        "email": "testing@example.com"
     },
     "paymentMethod": {
         "card": {
