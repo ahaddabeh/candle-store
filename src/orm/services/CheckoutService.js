@@ -3,10 +3,62 @@ const Stripe = require("stripe");
 const stripe = Stripe(process.env.SK);
 
 class CheckoutService {
-    constructor() {
+    constructor(db) {
+        this.db = db;
     }
 
-    checkout = async (req) => {
+    // Helper methods
+    _setAddress = (data) => { }
+    _setShippingAddress = (data) => { }
+    _setCustomerInfo = (data, address, shippingAddress, foundCustomer) => { }
+    _setPaymentInfo = (data) => { }
+    _setOrderInfo = (data) => { }
+    _captureStripeTransaction = (customer, address, shippingAddress, paymentInfo) => { };
+    _save = async (customer, order) => {
+        try {
+            await this.db.sequelize.transaction(async (transaction) => {
+                await this.db.Customer.create(customer, { transaction })
+                await this.db.Order.create(order, { transaction })
+                await this.db.Product.upsert({}, { transaction })
+                await transaction.afterCommit(async () => {
+                    // send email
+                })
+            })
+            return { success: true, message: "Transaction completed successfully" };
+        } catch (error) {
+            return { success: false, message: "Transaction failed", error: error };
+
+        }
+    }
+
+    checkout = async (data) => {
+        // Find customer if it exists
+        const foundCustomer = await this.db.Customer.findByEmail(data.email)
+
+        // Look up products from cart items
+        // Make sure we have inventory
+
+        // Format address info
+        const address = _setAddress(data);
+        // Format shippingAddress info
+        const shippingAddress = _setShippingAddress(data);
+        // Update customer info if anything changed
+        const customer = _setCustomerInfo(data, address, shippingAddress, foundCustomer);
+        // Format credit card for stripe
+        const paymentInfo = _setPaymentInfo(data);
+        // Format order info to go into our Order table
+        const order = _setOrderInfo(data);
+        // Submit payment to stripe
+
+        // if the stripe payment is successful, call the save method and pass the data to it
+
+        // if the stripe payment fails, then return a response saying it failed
+
+        // TODO: Temporary code
+        return data;
+    }
+
+    _checkout = async (req) => {
         const customer = await stripe.customers.create(req.body.customer)
         const paymentMethod = await stripe.paymentMethods.create({ type: 'card', ...req.body.paymentMethod });
         await stripe.paymentMethods.attach(paymentMethod.id, { customer: customer.id })

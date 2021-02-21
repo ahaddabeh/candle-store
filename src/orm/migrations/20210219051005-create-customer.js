@@ -8,31 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        allowNull: false,
-        type: Sequelize.STRING(20),
-        field: "name"
-      },
-      email: {
-        allowNull: false,
-        type: Sequelize.STRING(20),
-        field: "email"
-      },
-      phone: {
-        allowNull: false,
-        type: Sequelize.STRING(20),
-        field: "phone"
-      },
-      shippingAddress: {
-        allowNull: false,
-        type: Sequelize.STRING(20),
-        field: "shipping_address"
-      },
-      billingAddress: {
-        allowNull: false,
-        type: Sequelize.STRING(20),
-        field: "billing_address"
-      },
+      ...require("../models/customer/schema")(Sequelize),
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE,

@@ -14,7 +14,7 @@ class ShoppingCartController {
         try {
             // let newCustomer = new CustomerController();
             // let newOrder = new OrderController();
-            const result = await CheckoutService.checkout(req);
+            const result = await CheckoutService.checkout(req.body);
             // const customer = result.customer;
             // const order = result.order;
             // newCustomer.create({name: customer.name, email: customer.email, });

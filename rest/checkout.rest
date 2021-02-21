@@ -3,8 +3,63 @@ Content-Type: application/json
 
 {
     "customer": {
+        "first_name": "Ahmad",
+        "last_name": "Haddabeh",
+        "email": "testing@example.com",
+        "phone": "123-456-7890",
+        "address": "123 AppleBerry Ave.",
+        "city": "Tampa",
+        "country": "US",
+        "state": "Florida",
+        "shipping_address": "123 AppleBerry Ave.",
+        "shipping_city": "Tampa",
+        "shipping_country": "US",
+        "shipping_state": "Florida",
+        "card_number": "4242424242424242",
+        "exp_month": 2,
+        "exp_year": 2022,
+        "cvc": "314",
+        "cartItems": [
+            {
+                "id": 4,
+                "price": 12.00,
+                "name": "MidSummer's Night",
+                "quantity": 1
+            },
+            {
+                "id": 5,
+                "price": 15.00,
+                "name": "Pink Sands",
+                "quantity": 2
+            }
+        ]
+    }
+}
+
+###
+
+POST {{baseURL}}/cart/checkout
+Content-Type: application/json
+
+{
+    "customer": {
         "name": "Ahmad Haddabeh",
-        "email": "testing@example.com"
+        "email": "testing@example.com",
+        "phone": "123-456-7890",
+        "shipping": {
+            "address": {
+                "line1": "123 AppleBerry Ave.",
+                "city": "Tampa",
+                "country": "US",
+                "state": "Florida"
+            }
+        },
+        "address": {
+            "line1": "123 StrawBerry Ave.",
+            "city": "Tampa",
+            "country": "US",
+            "state": "Florida"
+        }
     },
     "paymentMethod": {
         "card": {

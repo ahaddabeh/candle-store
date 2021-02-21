@@ -31,4 +31,9 @@ module.exports = DataTypes => ({
         type: DataTypes.STRING(50),
         field: "title"
     },
+    quantityOnHand: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        field: "quantity_on_hand"
+    }
 })

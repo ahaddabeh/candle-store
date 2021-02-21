@@ -8,11 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
-        allowNull: false,
-        type: Sequelize.STRING(20),
-        field: "title"
-      },
+      ...require("../models/category/schema")(Sequelize),
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE,

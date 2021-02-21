@@ -9,36 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      categoryId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        field: "category_id"
-      },
-      price: {
-        allowNull: false,
-        type: Sequelize.DOUBLE,
-        field: "price"
-      },
-      description: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        field: "description"
-      },
-      image: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        field: "image"
-      },
-      ingredients: {
-        allowNull: false,
-        type: Sequelize.JSON,
-        field: "ingredients",
-      },
-      title: {
-        allowNull: false,
-        type: Sequelize.STRING(50),
-        field: "title"
-      },
+      ...require("../models/product/schema")(Sequelize),
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE,

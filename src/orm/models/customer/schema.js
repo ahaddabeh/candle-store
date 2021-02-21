@@ -1,10 +1,15 @@
 "use strict"
 
 module.exports = DataTypes => ({
-    ame: {
+    firstName: {
         allowNull: false,
         type: DataTypes.STRING(20),
-        field: "name"
+        field: "first_name"
+    },
+    lastName: {
+        allowNull: false,
+        type: DataTypes.STRING(20),
+        field: "last_name"
     },
     email: {
         allowNull: false,
@@ -18,12 +23,22 @@ module.exports = DataTypes => ({
     },
     shippingAddress: {
         allowNull: false,
-        type: DataTypes.STRING(20),
+        type: DataTypes.JSON,
         field: "shipping_address"
     },
     billingAddress: {
         allowNull: false,
-        type: DataTypes.STRING(20),
+        type: DataTypes.JSON,
         field: "billing_address"
+    },
+    stripeCustomerId: {
+        allowNull: false,
+        type: DataTypes.STRING(25),
+        field: "stripe_customer_id"
+    },
+    stripePaymentMethodId: {
+        allowNull: false,
+        type: DataTypes.STRING(25),
+        field: "stripe_payment_method_id"
     }
 })

@@ -8,26 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      customerId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        field: "customer_id"
-      },
-      total: {
-        allowNull: false,
-        type: Sequelize.DOUBLE,
-        field: "total"
-      },
-      cartItems: {
-        allowNull: false,
-        type: Sequelize.JSON,
-        field: "cart_items"
-      },
-      status: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN,
-        field: "status"
-      },
+      ...require("../models/order/schema")(Sequelize),
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE,
