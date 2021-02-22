@@ -19,7 +19,7 @@ Content-Type: application/json
         "exp_month": 2,
         "exp_year": 2022,
         "cvc": "314",
-        "cartItems": [
+        "cart_items": [
             {
                 "id": 4,
                 "price": 12.00,

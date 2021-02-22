@@ -8,12 +8,114 @@ class CheckoutService {
     }
 
     // Helper methods
-    _setAddress = (data) => { }
-    _setShippingAddress = (data) => { }
-    _setCustomerInfo = (data, address, shippingAddress, foundCustomer) => { }
-    _setPaymentInfo = (data) => { }
-    _setOrderInfo = (data) => { }
-    _captureStripeTransaction = (customer, address, shippingAddress, paymentInfo) => { };
+    _setAddress = (data) => {
+        return {
+            address: data.address,
+            city: data.city,
+            country: data.country,
+            state: data.state
+        }
+    }
+    _setShippingAddress = (data) => {
+        return {
+            shipping_address: data.shipping_address,
+            shipping_city: data.shipping_city,
+            shipping_country: data.shipping_country,
+            shipping_state: data.shipping_state
+        }
+    }
+    // _setCustomerInfo = (data, address, shippingAddress, foundCustomer) => {
+    _setCustomerInfo = (data, address, shippingAddress) => {
+        return {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            email: data.email,
+            phone: data.phone,
+            shipping_address: shippingAddress,
+            billing_address: address,
+        }
+    }
+    _setPaymentInfo = (data) => {
+        return {
+            card_number: data.card_number,
+            exp_month: data.exp_month,
+            exp_year: data.exp_year,
+            cvc: data.cvc
+        }
+    }
+    _setOrderInfo = (data) => {
+        const cartItems = data.cart_items;
+        let total = 0;
+        for (let i = 0; i < cartItems.length; i++) {
+            if (cartItems[i].quantity <= 1) {
+                total += +cartItems[i].price;
+            }
+            else if (cartItems[i].quantity > 1) {
+                total += +cartItems[i].price * +cartItems[i].quantity;
+            }
+        }
+        const lastFourDigits = data.card_number.substring(data.card_number.length - 4);
+        return {
+            total: total.toString(),
+            cart_items: cartItems,
+            status: true,
+            card_number: lastFourDigits
+        }
+    }
+    _captureStripeTransaction = async (customer, address, shippingAddress, paymentInfo, order) => {
+        const StripePaymentMethod = await stripe.paymentMethods.create({
+            type: 'card',
+            card: {
+                number: paymentInfo.card_number,
+                exp_month: paymentInfo.exp_month,
+                exp_year: paymentInfo.exp_year,
+                cvc: paymentInfo.cvc
+            }
+        });
+
+        const StripeCustomer = await stripe.customers.create({
+            name: `${customer.first_name} ${customer.last_name}`,
+            email: customer.email,
+            phone: customer.phone,
+            address: {
+                line1: address.address,
+                city: address.city,
+                state: address.state,
+                country: address.country
+            },
+            shipping: {
+                address: {
+                    line1: shippingAddress.shipping_address,
+                    city: shippingAddress.shipping_city,
+                    country: shippingAddress.shipping_country,
+                    state: shippingAddress.shipping_state
+                },
+                name: `${customer.first_name} ${customer.last_name}`
+            }
+
+        });
+
+        await stripe.paymentMethods.attach(StripePaymentMethod.id, { customer: StripeCustomer.id });
+
+        const StripePaymentIntent = await stripe.paymentIntents.create({
+            customer: StripeCustomer.id,
+            payment_method: StripePaymentMethod.id,
+            capture_method: "manual",
+            amount: +order.total * 100,
+            currency: "usd",
+            payment_method_types: ["card"]
+        });
+
+        // const StripeCharge = await stripe.charges.create({
+        //     customer: StripeCustomer.id,
+        //     amount: +order.total * 100,
+        //     payment_method: StripePaymentMethod.id,
+        //     currency: "usd",
+        // })
+
+        return { customer: StripeCustomer, payment_method: StripePaymentMethod, payment_intent: StripePaymentIntent };
+        // return { customer: StripeCustomer, payment_method: StripePaymentMethod, charge: StripeCharge };
+    };
     _save = async (customer, order) => {
         try {
             await this.db.sequelize.transaction(async (transaction) => {
@@ -33,28 +135,43 @@ class CheckoutService {
 
     checkout = async (data) => {
         // Find customer if it exists
-        const foundCustomer = await this.db.Customer.findByEmail(data.email)
+        // const foundCustomer = await this.db.Customer.findByEmail(data.email)
 
         // Look up products from cart items
         // Make sure we have inventory
 
         // Format address info
-        const address = _setAddress(data);
+        const address = this._setAddress(data);
         // Format shippingAddress info
-        const shippingAddress = _setShippingAddress(data);
+        const shippingAddress = this._setShippingAddress(data);
         // Update customer info if anything changed
-        const customer = _setCustomerInfo(data, address, shippingAddress, foundCustomer);
+        // const customer = this._setCustomerInfo(data, address, shippingAddress, foundCustomer);
+        const customer = this._setCustomerInfo(data, address, shippingAddress);
         // Format credit card for stripe
-        const paymentInfo = _setPaymentInfo(data);
+        const paymentInfo = this._setPaymentInfo(data);
         // Format order info to go into our Order table
-        const order = _setOrderInfo(data);
+        const order = this._setOrderInfo(data);
         // Submit payment to stripe
-
+        const stripePayment = this._captureStripeTransaction(customer, address, shippingAddress, paymentInfo, order);
         // if the stripe payment is successful, call the save method and pass the data to it
 
         // if the stripe payment fails, then return a response saying it failed
 
         // TODO: Temporary code
+        // console.log(stripePayment);
+        // customer = {
+        //     ...customer,
+        //     stripe_customer_id: stripePayment.customer.id,
+        //     stripe_payment_method_id: stripePayment.payment_method.id,
+        // };
+        // order = {
+        //     ...order,
+        //     stripe_customer_id: stripePayment.customer.id,
+        //     stripe_payment_method_id: stripePayment.payment_method.id
+        //     // stripe_charge_id: await stripePayment.charge.id
+        // }
+        console.log("order: ", order)
+        console.log("customer: ", customer);
         return data;
     }
 
