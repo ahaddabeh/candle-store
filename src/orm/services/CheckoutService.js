@@ -95,6 +95,10 @@ class CheckoutService {
 
         });
 
+        // const StripeInvoice = await stripe.invoices.create({
+        //     customer: StripeCustomer.id
+        // })
+
         await stripe.paymentMethods.attach(StripePaymentMethod.id, { customer: StripeCustomer.id });
 
         const StripePaymentIntent = await stripe.paymentIntents.create({
@@ -109,8 +113,7 @@ class CheckoutService {
         // const StripeCharge = await stripe.charges.create({
         //     customer: StripeCustomer.id,
         //     amount: +order.total * 100,
-        //     payment_method: StripePaymentMethod.id,
-        //     currency: "usd",
+        //     currency: "usd"
         // })
 
         return { customer: StripeCustomer, payment_method: StripePaymentMethod, payment_intent: StripePaymentIntent };
@@ -141,35 +144,35 @@ class CheckoutService {
         // Make sure we have inventory
 
         // Format address info
-        const address = this._setAddress(data);
+        let address = this._setAddress(data);
         // Format shippingAddress info
-        const shippingAddress = this._setShippingAddress(data);
+        let shippingAddress = this._setShippingAddress(data);
         // Update customer info if anything changed
-        // const customer = this._setCustomerInfo(data, address, shippingAddress, foundCustomer);
-        const customer = this._setCustomerInfo(data, address, shippingAddress);
+        // let customer = this._setCustomerInfo(data, address, shippingAddress, foundCustomer);
+        let customer = this._setCustomerInfo(data, address, shippingAddress);
         // Format credit card for stripe
-        const paymentInfo = this._setPaymentInfo(data);
+        let paymentInfo = this._setPaymentInfo(data);
         // Format order info to go into our Order table
-        const order = this._setOrderInfo(data);
+        let order = this._setOrderInfo(data);
         // Submit payment to stripe
-        const stripePayment = this._captureStripeTransaction(customer, address, shippingAddress, paymentInfo, order);
+        let stripePayment = await this._captureStripeTransaction(customer, address, shippingAddress, paymentInfo, order);
         // if the stripe payment is successful, call the save method and pass the data to it
 
         // if the stripe payment fails, then return a response saying it failed
 
         // TODO: Temporary code
         // console.log(stripePayment);
-        // customer = {
-        //     ...customer,
-        //     stripe_customer_id: stripePayment.customer.id,
-        //     stripe_payment_method_id: stripePayment.payment_method.id,
-        // };
-        // order = {
-        //     ...order,
-        //     stripe_customer_id: stripePayment.customer.id,
-        //     stripe_payment_method_id: stripePayment.payment_method.id
-        //     // stripe_charge_id: await stripePayment.charge.id
-        // }
+        customer = {
+            ...customer,
+            stripe_customer_id: stripePayment.customer.id,
+            stripe_payment_method_id: stripePayment.payment_method.id,
+        };
+        order = {
+            ...order,
+            stripe_customer_id: stripePayment.customer.id,
+            stripe_payment_method_id: stripePayment.payment_method.id
+            // stripe_charge_id: await stripePayment.charge.id
+        }
         console.log("order: ", order)
         console.log("customer: ", customer);
         return data;
