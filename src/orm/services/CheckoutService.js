@@ -8,6 +8,12 @@ class CheckoutService {
     }
 
     // Helper methods
+    _sortObjectKeys = _obj => Object.keys(_obj).sort().reduce((obj, key) => {
+        obj[key] = _obj[key];
+        return obj;
+    }, {});
+
+
     _setAddress = (data) => {
         return {
             address: data.address,
@@ -27,6 +33,7 @@ class CheckoutService {
     // _setCustomerInfo = (data, address, shippingAddress, foundCustomer) => {
     _setCustomerInfo = (data, address, shippingAddress) => {
         return {
+            // Get rid of underscores and camelcase them
             first_name: data.first_name,
             last_name: data.last_name,
             email: data.email,
@@ -62,8 +69,13 @@ class CheckoutService {
             card_number: lastFourDigits
         }
     }
+
+    _compareCartItemsWithInventory = (cartItems, onHand) => {
+        // Compare both arrays and see
+    }
+
     _captureStripeTransaction = async (customer, address, shippingAddress, paymentInfo, order) => {
-        const StripePaymentMethod = await stripe.paymentMethods.create({
+        const stripePaymentMethod = await stripe.paymentMethods.create({
             type: 'card',
             card: {
                 number: paymentInfo.card_number,
@@ -73,7 +85,9 @@ class CheckoutService {
             }
         });
 
-        const StripeCustomer = await stripe.customers.create({
+
+        // TODO: check if this customer was found in the database and has a stripe customer id 
+        const stripeCustomer = await stripe.customers.create({
             name: `${customer.first_name} ${customer.last_name}`,
             email: customer.email,
             phone: customer.phone,
@@ -96,14 +110,14 @@ class CheckoutService {
         });
 
         // const StripeInvoice = await stripe.invoices.create({
-        //     customer: StripeCustomer.id
+        //     customer: stripeCustomer.id
         // })
 
-        await stripe.paymentMethods.attach(StripePaymentMethod.id, { customer: StripeCustomer.id });
+        await stripe.paymentMethods.attach(stripePaymentMethod.id, { customer: stripeCustomer.id });
 
-        const StripePaymentIntent = await stripe.paymentIntents.create({
-            customer: StripeCustomer.id,
-            payment_method: StripePaymentMethod.id,
+        const stripePaymentIntent = await stripe.paymentIntents.create({
+            customer: stripeCustomer.id,
+            payment_method: stripePaymentMethod.id,
             capture_method: "manual",
             amount: +order.total * 100,
             currency: "usd",
@@ -111,17 +125,25 @@ class CheckoutService {
         });
 
         // const StripeCharge = await stripe.charges.create({
-        //     customer: StripeCustomer.id,
+        //     customer: stripeCustomer.id,
         //     amount: +order.total * 100,
         //     currency: "usd"
         // })
 
-        return { customer: StripeCustomer, payment_method: StripePaymentMethod, payment_intent: StripePaymentIntent };
-        // return { customer: StripeCustomer, payment_method: StripePaymentMethod, charge: StripeCharge };
+        const confirmed = await stripe.paymentIntents.confirm(stripePaymentIntent.id);
+        const response = await stripe.paymentIntents.capture(stripePaymentIntent.id);
+
+        const stripeChargeId = response.charges.data[0].id;
+        console.log("Charge", stripeChargeId);
+
+
+        return { customer: stripeCustomer, payment_method: stripePaymentMethod, payment_intent: stripePaymentIntent, charge: stripeChargeId };
+        // return { customer: stripeCustomer, payment_method: stripePaymentMethod, charge: StripeCharge };
     };
     _save = async (customer, order) => {
         try {
             await this.db.sequelize.transaction(async (transaction) => {
+                // TODO: if this was a foundCustomer and exists in the database, update instead of create
                 await this.db.Customer.create(customer, { transaction })
                 await this.db.Order.create(order, { transaction })
                 await this.db.Product.upsert({}, { transaction })
@@ -140,8 +162,14 @@ class CheckoutService {
         // Find customer if it exists
         // const foundCustomer = await this.db.Customer.findByEmail(data.email)
 
+        // If the customer is found, compare the data in the form to what's in the database and update if anything is different
+        // Merge the data from the foundCustomer with the new data from the form submission
+
         // Look up products from cart items
-        // Make sure we have inventory
+        // const foundProducts = await this.db.Product.findAllWhereIdIn(data.cart_items.map(it => it.id))
+
+        // Make sure we have inventory. Check desired quantity against found products quantity 
+        // this._compareCartItemsWithInventory(data.cart_items, foundProducts)
 
         // Format address info
         let address = this._setAddress(data);
@@ -170,8 +198,9 @@ class CheckoutService {
         order = {
             ...order,
             stripe_customer_id: stripePayment.customer.id,
-            stripe_payment_method_id: stripePayment.payment_method.id
-            // stripe_charge_id: await stripePayment.charge.id
+            stripe_payment_method_id: stripePayment.payment_method.id,
+            stripe_charge_id: await stripePayment.charge,
+            invoice_id: Date.now().toString()
         }
         console.log("order: ", order)
         console.log("customer: ", customer);

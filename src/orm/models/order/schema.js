@@ -7,7 +7,7 @@ module.exports = DataTypes => ({
         field: "customer_id"
     },
     invoiceId: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING(25),
         field: "invoice_id"
     },

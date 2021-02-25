@@ -37,7 +37,7 @@ module.exports = DataTypes => ({
         field: "stripe_customer_id"
     },
     stripePaymentMethodId: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING(25),
         field: "stripe_payment_method_id"
     }

@@ -109,6 +109,7 @@ const run = async () => {
     currency: 'usd',
     payment_method_types: ['card'],
   });
+
   // This is gonna be the payment intent response object
   /*
   {

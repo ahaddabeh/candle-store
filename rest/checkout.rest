@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "customer": {
-        "first_name": "Wedad",
+        "first_name": "Alaa",
         "last_name": "Haddabeh",
         "email": "testing@example.com",
         "phone": "123-456-7890",
