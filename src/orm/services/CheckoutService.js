@@ -30,8 +30,7 @@ class CheckoutService {
             shipping_state: data.shipping_state
         }
     }
-    // _setCustomerInfo = (data, address, shippingAddress, foundCustomer) => {
-    _setCustomerInfo = (data, address, shippingAddress) => {
+    _setNewCustomerInfo = (data, address, shippingAddress) => {
         return {
             // Get rid of underscores and camelcase them
             first_name: data.first_name,
@@ -41,6 +40,34 @@ class CheckoutService {
             shipping_address: shippingAddress,
             billing_address: address,
         }
+    }
+
+    _setCustomerInfo = (data, address, shippingAddress, foundCustomer) => {
+        let customerData = {
+            ...foundCustomer
+        };
+        const billingAddress = this._sortObjectKeys(address);
+        const foundCustomerBillingAddress = this._sortObjectKeys(foundCustomer.address);
+        const mailingAddress = this._sortObjectKeys(shippingAddress);
+        const foundCustomerMailingAddress = this._sortObjectKeys(foundCustomer.shipping_address);
+
+
+        if (data.first_name !== foundCustomer.first_name) {
+            customerData.first_name = data.first_name
+        }
+        if (data.last_name !== foundCustomer.last_name) {
+            customerData.last_name = data.last_name
+        }
+        if (data.phone !== foundCustomer.phone) {
+            customerData.phone = data.phone
+        }
+        if (JSON.stringify(mailingAddress) !== JSON.stringify(foundCustomerMailingAddress)) {
+            customerData.shipping_address = shippingAddress;
+        }
+        if (JSON.stringify(billingAddress) !== JSON.stringify(foundCustomerBillingAddress)) {
+            customerData.billing_address = address;
+        }
+        return customerData;
     }
     _setPaymentInfo = (data) => {
         return {
@@ -72,6 +99,20 @@ class CheckoutService {
 
     _compareCartItemsWithInventory = (cartItems, onHand) => {
         // Compare both arrays and see
+        let failed = []
+        for (let i = 0; i < cartItems.length; i++) {
+            for (let j = 0; j < onHand.length; j++) {
+                if (cartItems[i].id === onHand[j].id) {
+                    if (cartItems[i].quantity > onHand[j].quantityOnHand) {
+                        failed.push(cartItems[i])
+                    }
+                }
+            }
+        }
+        if (failed.length > 0) {
+            return { cart_items: failed, status: false, message: "Not enough in stock for some of the items..." };
+        }
+        return { cart_items: failed, status: true, message: "Inventory is fine" };
     }
 
     _captureStripeTransaction = async (customer, address, shippingAddress, paymentInfo, order) => {
@@ -87,31 +128,55 @@ class CheckoutService {
 
 
         // TODO: check if this customer was found in the database and has a stripe customer id 
-        const stripeCustomer = await stripe.customers.create({
-            name: `${customer.first_name} ${customer.last_name}`,
-            email: customer.email,
-            phone: customer.phone,
-            address: {
-                line1: address.address,
-                city: address.city,
-                state: address.state,
-                country: address.country
-            },
-            shipping: {
+        let stripeCustomer = {};
+        if (customer.stripe_customer_id) {
+            stripeCustomer = await stripe.customers.update(
+                customer.stripe_customer_id,
+                {
+                    name: `${customer.first_name} ${customer.last_name}`,
+                    email: customer.email,
+                    phone: customer.phone,
+                    address: {
+                        line1: address.address,
+                        city: address.city,
+                        state: address.state,
+                        country: address.country
+                    },
+                    shipping: {
+                        address: {
+                            line1: shippingAddress.shipping_address,
+                            city: shippingAddress.shipping_city,
+                            country: shippingAddress.shipping_country,
+                            state: shippingAddress.shipping_state
+                        },
+                        name: `${customer.first_name} ${customer.last_name}`
+                    }
+                }
+            )
+        }
+        else {
+            stripeCustomer = await stripe.customers.create({
+                name: `${customer.first_name} ${customer.last_name}`,
+                email: customer.email,
+                phone: customer.phone,
                 address: {
-                    line1: shippingAddress.shipping_address,
-                    city: shippingAddress.shipping_city,
-                    country: shippingAddress.shipping_country,
-                    state: shippingAddress.shipping_state
+                    line1: address.address,
+                    city: address.city,
+                    state: address.state,
+                    country: address.country
                 },
-                name: `${customer.first_name} ${customer.last_name}`
-            }
+                shipping: {
+                    address: {
+                        line1: shippingAddress.shipping_address,
+                        city: shippingAddress.shipping_city,
+                        country: shippingAddress.shipping_country,
+                        state: shippingAddress.shipping_state
+                    },
+                    name: `${customer.first_name} ${customer.last_name}`
+                }
 
-        });
-
-        // const StripeInvoice = await stripe.invoices.create({
-        //     customer: stripeCustomer.id
-        // })
+            });
+        }
 
         await stripe.paymentMethods.attach(stripePaymentMethod.id, { customer: stripeCustomer.id });
 
@@ -124,12 +189,6 @@ class CheckoutService {
             payment_method_types: ["card"]
         });
 
-        // const StripeCharge = await stripe.charges.create({
-        //     customer: stripeCustomer.id,
-        //     amount: +order.total * 100,
-        //     currency: "usd"
-        // })
-
         const confirmed = await stripe.paymentIntents.confirm(stripePaymentIntent.id);
         const response = await stripe.paymentIntents.capture(stripePaymentIntent.id);
 
@@ -138,13 +197,19 @@ class CheckoutService {
 
 
         return { customer: stripeCustomer, payment_method: stripePaymentMethod, payment_intent: stripePaymentIntent, charge: stripeChargeId };
-        // return { customer: stripeCustomer, payment_method: stripePaymentMethod, charge: StripeCharge };
     };
-    _save = async (customer, order) => {
+
+
+    _save = async (customer, order, found) => {
         try {
             await this.db.sequelize.transaction(async (transaction) => {
                 // TODO: if this was a foundCustomer and exists in the database, update instead of create
-                await this.db.Customer.create(customer, { transaction })
+                if (found) {
+                    await this.db.Customer.update(customer, { transaction });
+                }
+                else {
+                    await this.db.Customer.create(customer, { transaction })
+                }
                 await this.db.Order.create(order, { transaction })
                 await this.db.Product.upsert({}, { transaction })
                 await transaction.afterCommit(async () => {
@@ -159,29 +224,41 @@ class CheckoutService {
     }
 
     checkout = async (data) => {
-        // Find customer if it exists
-        // const foundCustomer = await this.db.Customer.findByEmail(data.email)
 
         // If the customer is found, compare the data in the form to what's in the database and update if anything is different
         // Merge the data from the foundCustomer with the new data from the form submission
 
         // Look up products from cart items
-        // const foundProducts = await this.db.Product.findAllWhereIdIn(data.cart_items.map(it => it.id))
+        const foundProducts = await this.db.Product.findAllWhereIdIn(data.cart_items.map(it => it.id))
 
         // Make sure we have inventory. Check desired quantity against found products quantity 
-        // this._compareCartItemsWithInventory(data.cart_items, foundProducts)
+        this._compareCartItemsWithInventory(data.cart_items, foundProducts)
 
         // Format address info
         let address = this._setAddress(data);
+
         // Format shippingAddress info
         let shippingAddress = this._setShippingAddress(data);
+
+        // Find customer if it exists
+        const foundCustomer = await this.db.Customer.findByEmail(data.email)
+
         // Update customer info if anything changed
         // let customer = this._setCustomerInfo(data, address, shippingAddress, foundCustomer);
-        let customer = this._setCustomerInfo(data, address, shippingAddress);
+        let customer = {};
+        if (foundCustomer) {
+            customer = this._setCustomerInfo(data, address, shippingAddress, foundCustomer)
+        }
+        else {
+            customer = this._setCustomerInfo(data, address, shippingAddress);
+        }
+
         // Format credit card for stripe
         let paymentInfo = this._setPaymentInfo(data);
+
         // Format order info to go into our Order table
         let order = this._setOrderInfo(data);
+
         // Submit payment to stripe
         let stripePayment = await this._captureStripeTransaction(customer, address, shippingAddress, paymentInfo, order);
         // if the stripe payment is successful, call the save method and pass the data to it

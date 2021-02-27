@@ -39,24 +39,69 @@ const createProduct = () => ({
     ingredients: Array.from({ length: getRandomInclusive(3, 5) }, (k, v) => faker.lorem.words(1)),
     price: faker.commerce.price(10, 25, 2),
     description: faker.lorem.words(30),
-    image: "candle1.jpg"
+    image: "candle1.jpg",
+    quantity_on_hand: getRandomInclusive(1, 1000)
 })
+
+const createCartItems = (productArray) => {
+    let cart = []
+    let currentProduct = {};
+    for (let i = 0; i < getRandomInclusive(0, 4); i++) {
+        currentProduct = productArray[getRandomInclusive(0, productArray.length - 1)];
+        cart.push({
+            id: currentProduct.id,
+            price: currentProduct.price,
+            title: currentProduct.title,
+            quantity: getRandomInclusive(1, 3)
+        })
+    }
+    return cart;
+}
+
+const generateCardNumber = () => {
+    let cardNum = "";
+    let randomInt = 0;
+    for (let i = 0; i < 4; i++) {
+        randomInt = getRandomInclusive(0, 9).toString();
+        cardNum = cardNum + randomInt;
+    }
+    return cardNum;
+}
+
+const createCustomer = () => ({
+    id: newId("customers"),
+    first_name: faker.name.findName(),
+    last_name: faker.name.findName(),
+    email: faker.internet.email(),
+    phone: faker.phone.phoneNumber(),
+    shipping_address: {
+        shipping_address: faker.address.streetAddress(),
+        shipping_city: faker.address.city(),
+        shipping_country: faker.address.country(),
+        shipping_state: faker.address.state()
+    },
+    billing_address: {
+        address: faker.address.streetAddress(),
+        city: faker.address.city(),
+        country: faker.address.country(),
+        state: faker.address.state()
+    },
+    stripe_customer_id: faker.random.uuid(),
+    stripe_payment_method_id: faker.random.uuid()
+})
+
 
 const createOrder = () => ({
     id: newId("orders"),
     customer_id: getRandomInclusive(0, output.customers.length),
     status: getRandomInclusive(0, 1) === 1 ? true : false,
     total: faker.commerce.price(10, 100, 2),
-    cart_items: Array.from({ length: getRandomInclusive(1, 4) }, () => getRandomInclusive(1, output.products.length))
-})
-
-const createCustomer = () => ({
-    id: newId("customers"),
-    name: faker.name.findName(),
-    email: faker.internet.email(),
-    phone: faker.phone.phoneNumber(),
-    shipping_address: faker.address.streetAddress(),
-    billing_address: faker.address.streetAddress()
+    cart_items: createCartItems(output.products),
+    invoice_id: Date.now().toString(),
+    stripe_charge_id: faker.random.uuid(),
+    stripe_customer_id: faker.random.uuid(),
+    stripe_payment_method_id: faker.random.uuid(),
+    card_number: generateCardNumber()
 })
 
 for (let i = 0; i < 20; i++) {
