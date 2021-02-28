@@ -33,12 +33,12 @@ class CheckoutService {
     _setNewCustomerInfo = (data, address, shippingAddress) => {
         return {
             // Get rid of underscores and camelcase them
-            first_name: data.first_name,
-            last_name: data.last_name,
+            firstName: data.first_name,
+            lastName: data.last_name,
             email: data.email,
             phone: data.phone,
-            shipping_address: shippingAddress,
-            billing_address: address,
+            shippingAddress: shippingAddress,
+            billingAddress: address,
         }
     }
 
@@ -46,6 +46,7 @@ class CheckoutService {
         let customerData = {
             ...foundCustomer
         };
+        console.log("_setCustomerInfo")
         const billingAddress = this._sortObjectKeys(address);
         const foundCustomerBillingAddress = this._sortObjectKeys(foundCustomer.address);
         const mailingAddress = this._sortObjectKeys(shippingAddress);
@@ -91,9 +92,9 @@ class CheckoutService {
         const lastFourDigits = data.card_number.substring(data.card_number.length - 4);
         return {
             total: total.toString(),
-            cart_items: cartItems,
+            cartItems: cartItems,
             status: true,
-            card_number: lastFourDigits
+            cardNumber: lastFourDigits
         }
     }
 
@@ -208,10 +209,21 @@ class CheckoutService {
                     await this.db.Customer.update(customer, { transaction });
                 }
                 else {
+                    console.log("Creating customer in db")
                     await this.db.Customer.create(customer, { transaction })
                 }
-                await this.db.Order.create(order, { transaction })
-                await this.db.Product.upsert({}, { transaction })
+                // Actual customer id (not the stripe customer id) isn't created until it is actually put into the database
+                console.log("Getting final customer object")
+                const finalCustomer = async (customer) => {
+                    return await this.db.Customer.findOne({ where: { email: customer.email } })
+                }
+                const updateOrder = {
+                    ...order,
+                    customerId: finalCustomer(customer).id
+                }
+                console.log("Creating an order", order);
+                await this.db.Order.create(updateOrder, { transaction })
+                // await this.db.Product.upsert({}, { transaction })
                 await transaction.afterCommit(async () => {
                     // send email
                 })
@@ -233,7 +245,9 @@ class CheckoutService {
 
         // Make sure we have inventory. Check desired quantity against found products quantity 
         this._compareCartItemsWithInventory(data.cart_items, foundProducts)
-
+        if (this._compareCartItemsWithInventory.success === false) {
+            return "Not enough in inventory";
+        }
         // Format address info
         let address = this._setAddress(data);
 
@@ -241,7 +255,8 @@ class CheckoutService {
         let shippingAddress = this._setShippingAddress(data);
 
         // Find customer if it exists
-        const foundCustomer = await this.db.Customer.findByEmail(data.email)
+        // const foundCustomer = await this.db.Customer.findByEmail(data.email);
+        const foundCustomer = await this.db.Customer.findOne({ where: { email: data.email } });
 
         // Update customer info if anything changed
         // let customer = this._setCustomerInfo(data, address, shippingAddress, foundCustomer);
@@ -250,7 +265,7 @@ class CheckoutService {
             customer = this._setCustomerInfo(data, address, shippingAddress, foundCustomer)
         }
         else {
-            customer = this._setCustomerInfo(data, address, shippingAddress);
+            customer = this._setNewCustomerInfo(data, address, shippingAddress);
         }
 
         // Format credit card for stripe
@@ -269,19 +284,24 @@ class CheckoutService {
         // console.log(stripePayment);
         customer = {
             ...customer,
-            stripe_customer_id: stripePayment.customer.id,
-            stripe_payment_method_id: stripePayment.payment_method.id,
+            stripeCustomerId: stripePayment.customer.id,
+            stripePaymentMethodId: stripePayment.payment_method.id,
         };
         order = {
             ...order,
-            stripe_customer_id: stripePayment.customer.id,
-            stripe_payment_method_id: stripePayment.payment_method.id,
-            stripe_charge_id: await stripePayment.charge,
-            invoice_id: Date.now().toString()
+            stripeCustomerId: stripePayment.customer.id,
+            stripePaymentMethodId: stripePayment.payment_method.id,
+            stripeChargeId: await stripePayment.charge,
+            invoiceId: Date.now().toString()
         }
+
+        // Boolean value to be put into the _save function's arguments
+        const saveFound = foundCustomer ? true : false;
+
+
         console.log("order: ", order)
         console.log("customer: ", customer);
-        return data;
+        return this._save(customer, order, saveFound);
     }
 
     _checkout = async (req) => {

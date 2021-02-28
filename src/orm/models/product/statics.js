@@ -9,9 +9,14 @@ module.exports = (model) => ({
     findAllWhereIdIn: async (ids) => {
         // sequelize knows that we're implying to find id in ids
         return await model.findAll({ where: { id: ids } })
-    },
-
-    updateProductQuantities: async () => {
-
     }
+
+    // updateProductQuantities: async (cart_items) => {
+    //     let product = {}
+    //     for(let i = 0; i < cart_items.length; i++) {
+    //         product = await model.findOne({where: {id: cart_items[i].id}})
+    //         product.quantity_on_hand -= cart_items[i].quantity;
+
+    //     }
+    // }
 })

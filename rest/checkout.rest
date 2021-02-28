@@ -21,15 +21,15 @@ Content-Type: application/json
         "cvc": "314",
         "cart_items": [
             {
-                "id": 4,
-                "price": 12.00,
-                "name": "MidSummer's Night",
+                "id": 12,
+                "price": 25.00,
+                "title": "quis ad ullam",
                 "quantity": 1
             },
             {
-                "id": 5,
-                "price": 15.00,
-                "name": "Pink Sands",
+                "id": 6,
+                "price": 11.00,
+                "title": "laborum nulla earum",
                 "quantity": 2
             }
         ]
