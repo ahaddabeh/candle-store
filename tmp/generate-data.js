@@ -93,7 +93,7 @@ const createCustomer = () => ({
 
 const createOrder = () => ({
     id: newId("orders"),
-    customer_id: getRandomInclusive(0, output.customers.length),
+    customer_id: getRandomInclusive(1, output.customers.length),
     status: getRandomInclusive(0, 1) === 1 ? true : false,
     total: faker.commerce.price(10, 100, 2),
     cart_items: createCartItems(output.products),

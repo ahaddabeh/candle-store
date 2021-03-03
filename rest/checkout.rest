@@ -3,9 +3,9 @@ Content-Type: application/json
 
 {
     "customer": {
-        "first_name": "Alaa",
+        "first_name": "Ahmad",
         "last_name": "Haddabeh",
-        "email": "testing@example.com",
+        "email": "edmund_oconner41@yahoo.com",
         "phone": "123-456-7890",
         "address": "123 AppleBerry Ave.",
         "city": "Tampa",

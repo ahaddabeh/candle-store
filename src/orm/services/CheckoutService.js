@@ -44,29 +44,25 @@ class CheckoutService {
 
     _setCustomerInfo = (data, address, shippingAddress, foundCustomer) => {
         let customerData = {
-            ...foundCustomer
+            ...foundCustomer,
+            billingAddress: address,
+            shippingAddress: shippingAddress
         };
-        console.log("_setCustomerInfo")
+        console.log("_setCustomerInfo", customerData);
         const billingAddress = this._sortObjectKeys(address);
-        const foundCustomerBillingAddress = this._sortObjectKeys(foundCustomer.address);
+        const foundCustomerBillingAddress = this._sortObjectKeys(foundCustomer.billingAddress);
         const mailingAddress = this._sortObjectKeys(shippingAddress);
-        const foundCustomerMailingAddress = this._sortObjectKeys(foundCustomer.shipping_address);
+        const foundCustomerMailingAddress = this._sortObjectKeys(foundCustomer.shippingAddress);
 
 
-        if (data.first_name !== foundCustomer.first_name) {
-            customerData.first_name = data.first_name
+        if (data.first_name !== foundCustomer.firstName) {
+            customerData.firstName = data.first_name
         }
-        if (data.last_name !== foundCustomer.last_name) {
-            customerData.last_name = data.last_name
+        if (data.last_name !== foundCustomer.lastName) {
+            customerData.lastName = data.last_name
         }
         if (data.phone !== foundCustomer.phone) {
             customerData.phone = data.phone
-        }
-        if (JSON.stringify(mailingAddress) !== JSON.stringify(foundCustomerMailingAddress)) {
-            customerData.shipping_address = shippingAddress;
-        }
-        if (JSON.stringify(billingAddress) !== JSON.stringify(foundCustomerBillingAddress)) {
-            customerData.billing_address = address;
         }
         return customerData;
     }
@@ -98,22 +94,26 @@ class CheckoutService {
         }
     }
 
-    _compareCartItemsWithInventory = (cartItems, onHand) => {
+    _compareCartItemsWithInventory = (cartItems, foundProducts) => {
         // Compare both arrays and see
-        let failed = []
+        let items = [];
+        let status = true;
+        let message = "Inventory is fine";
         for (let i = 0; i < cartItems.length; i++) {
-            for (let j = 0; j < onHand.length; j++) {
-                if (cartItems[i].id === onHand[j].id) {
-                    if (cartItems[i].quantity > onHand[j].quantityOnHand) {
-                        failed.push(cartItems[i])
+            for (let j = 0; j < foundProducts.length; j++) {
+                if (cartItems[i].id === foundProducts[j].id) {
+                    if (cartItems[i].quantity > foundProducts[j].quantityOnHand) {
+                        status = false;
+                        message = "Not enough in stock for some of the items..."
+                        items.push({ ...foundProduct[j], status: failed });
+                    }
+                    else {
+                        items.push({ ...foundProducts[j], quantityOnHand: foundProducts[j].quantityOnHand - cartItems[i].quantity })
                     }
                 }
             }
         }
-        if (failed.length > 0) {
-            return { cart_items: failed, status: false, message: "Not enough in stock for some of the items..." };
-        }
-        return { cart_items: failed, status: true, message: "Inventory is fine" };
+        return { cart_items: items, status, message };
     }
 
     _captureStripeTransaction = async (customer, address, shippingAddress, paymentInfo, order) => {
@@ -201,29 +201,35 @@ class CheckoutService {
     };
 
 
-    _save = async (customer, order, found) => {
+    _save = async (_customer, order) => {
+        let customer = { ..._customer };
         try {
             await this.db.sequelize.transaction(async (transaction) => {
                 // TODO: if this was a foundCustomer and exists in the database, update instead of create
-                if (found) {
-                    await this.db.Customer.update(customer, { transaction });
+                let orderForDb = {};
+                if (customer.id && customer.id > 0) {
+                    console.log("Updating customer in db")
+                    await this.db.Customer.update(customer, { where: { id: customer.id }, transaction });
+                    orderForDb = {
+                        ...order,
+                        customerId: customer.id
+                    }
+                    await this.db.Order.create(orderForDb, { transaction })
                 }
                 else {
                     console.log("Creating customer in db")
-                    await this.db.Customer.create(customer, { transaction })
+                    customer = await this.db.Customer.create(customer, { transaction })
+                    console.log("Customer db length:", customerCount);
+                    orderForDb = {
+                        ...order,
+                        customerId: customer.id
+                    }
+                    await this.db.Order.create(orderForDb, { transaction })
                 }
                 // Actual customer id (not the stripe customer id) isn't created until it is actually put into the database
-                console.log("Getting final customer object")
-                const finalCustomer = async (customer) => {
-                    return await this.db.Customer.findOne({ where: { email: customer.email } })
-                }
-                const updateOrder = {
-                    ...order,
-                    customerId: finalCustomer(customer).id
-                }
-                console.log("Creating an order", order);
-                await this.db.Order.create(updateOrder, { transaction })
-                // await this.db.Product.upsert({}, { transaction })
+
+                await this.db.Product.bulkCreate(productArray, { updateOnDuplicate: ["updateAt", "quantityOnHand"], transaction })
+
                 await transaction.afterCommit(async () => {
                     // send email
                 })
@@ -241,13 +247,15 @@ class CheckoutService {
         // Merge the data from the foundCustomer with the new data from the form submission
 
         // Look up products from cart items
-        const foundProducts = await this.db.Product.findAllWhereIdIn(data.cart_items.map(it => it.id))
+        const foundProducts = JSON.parse(JSON.stringify(await this.db.Product.findAllWhereIdIn(data.cart_items.map(it => it.id))));
 
         // Make sure we have inventory. Check desired quantity against found products quantity 
         this._compareCartItemsWithInventory(data.cart_items, foundProducts)
         if (this._compareCartItemsWithInventory.success === false) {
+            // TODO: return an object telling which items are not in stock/dont meet inventory
             return "Not enough in inventory";
         }
+
         // Format address info
         let address = this._setAddress(data);
 
@@ -255,18 +263,22 @@ class CheckoutService {
         let shippingAddress = this._setShippingAddress(data);
 
         // Find customer if it exists
-        // const foundCustomer = await this.db.Customer.findByEmail(data.email);
-        const foundCustomer = await this.db.Customer.findOne({ where: { email: data.email } });
-
+        const foundCustomer = JSON.parse(JSON.stringify(await this.db.Customer.findByEmail(data.email)));
+        console.log("data email: ", data.email);
+        console.log("Found customer:", foundCustomer);
+        // const foundCustomer = await this.db.Customer.findOne({ where: { email: data.email } });
         // Update customer info if anything changed
-        // let customer = this._setCustomerInfo(data, address, shippingAddress, foundCustomer);
         let customer = {};
         if (foundCustomer) {
+            console.log("The customer is in the database from before")
             customer = this._setCustomerInfo(data, address, shippingAddress, foundCustomer)
         }
         else {
             customer = this._setNewCustomerInfo(data, address, shippingAddress);
         }
+
+        // Boolean value to be put into the _save function's arguments
+        // const saveFound = foundCustomer.id ? true : false;
 
         // Format credit card for stripe
         let paymentInfo = this._setPaymentInfo(data);
@@ -295,13 +307,11 @@ class CheckoutService {
             invoiceId: Date.now().toString()
         }
 
-        // Boolean value to be put into the _save function's arguments
-        const saveFound = foundCustomer ? true : false;
 
 
-        console.log("order: ", order)
-        console.log("customer: ", customer);
-        return this._save(customer, order, saveFound);
+        // console.log("order: ", order)
+        // console.log("customer: ", customer);
+        return this._save(customer, order);
     }
 
     _checkout = async (req) => {

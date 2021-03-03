@@ -24,8 +24,7 @@ module.exports = {
       deletedAt: {
         allowNull: true,
         type: Sequelize.DATE,
-        field: "deleted_at",
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
+        field: "deleted_at"
       }
     });
   },

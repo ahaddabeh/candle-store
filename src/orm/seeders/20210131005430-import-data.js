@@ -55,7 +55,7 @@ module.exports = {
         id: customer.id,
         first_name: customer.first_name,
         last_name: customer.last_name,
-        email: customer.email,
+        email: customer.email.toLowerCase(),
         phone: customer.phone,
         shipping_address: JSON.stringify(customer.shipping_address),
         billing_address: JSON.stringify(customer.billing_address),
