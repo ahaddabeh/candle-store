@@ -3,9 +3,9 @@ Content-Type: application/json
 
 {
     "customer": {
-        "first_name": "Ahmad",
-        "last_name": "Haddabeh",
-        "email": "edmund_oconner41@yahoo.com",
+        "first_name": "Baby",
+        "last_name": "Cousins",
+        "email": "baby@example.com",
         "phone": "123-456-7890",
         "address": "123 AppleBerry Ave.",
         "city": "Tampa",
@@ -21,15 +21,15 @@ Content-Type: application/json
         "cvc": "314",
         "cart_items": [
             {
-                "id": 12,
-                "price": 25.00,
-                "title": "quis ad ullam",
+                "id": 2,
+                "price": 19.00,
+                "title": "fugit id quaerat",
                 "quantity": 1
             },
             {
-                "id": 6,
-                "price": 11.00,
-                "title": "laborum nulla earum",
+                "id": 10,
+                "price": 13.00,
+                "title": "beatae ut cupiditate",
                 "quantity": 2
             }
         ]

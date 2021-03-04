@@ -1,7 +1,7 @@
 require("dotenv").config({});
 const Stripe = require("stripe");
 const stripe = Stripe(process.env.SK);
-
+const nodemailer = require("nodemailer");
 class CheckoutService {
     constructor(db) {
         this.db = db;
@@ -105,7 +105,7 @@ class CheckoutService {
                     if (cartItems[i].quantity > foundProducts[j].quantityOnHand) {
                         status = false;
                         message = "Not enough in stock for some of the items..."
-                        items.push({ ...foundProduct[j], status: failed });
+                        items.push({ ...foundProduct[j], status: status });
                     }
                     else {
                         items.push({ ...foundProducts[j], quantityOnHand: foundProducts[j].quantityOnHand - cartItems[i].quantity })
@@ -201,7 +201,7 @@ class CheckoutService {
     };
 
 
-    _save = async (_customer, order) => {
+    _save = async (_customer, order, foundProducts) => {
         let customer = { ..._customer };
         try {
             await this.db.sequelize.transaction(async (transaction) => {
@@ -219,7 +219,7 @@ class CheckoutService {
                 else {
                     console.log("Creating customer in db")
                     customer = await this.db.Customer.create(customer, { transaction })
-                    console.log("Customer db length:", customerCount);
+                    console.log("Customer in save after created in database:", customer)
                     orderForDb = {
                         ...order,
                         customerId: customer.id
@@ -227,11 +227,27 @@ class CheckoutService {
                     await this.db.Order.create(orderForDb, { transaction })
                 }
                 // Actual customer id (not the stripe customer id) isn't created until it is actually put into the database
-
-                await this.db.Product.bulkCreate(productArray, { updateOnDuplicate: ["updateAt", "quantityOnHand"], transaction })
+                console.log("Attempting to update products");
+                await this.db.Product.bulkCreate(foundProducts, { updateOnDuplicate: ["updateAt", "quantityOnHand"], transaction })
 
                 await transaction.afterCommit(async () => {
                     // send email
+                    let transporter = nodemailer.createTransport({
+                        service: "gmail",
+                        auth: {
+                            // user: process.env.CU,
+                            // pass: process.env.CP
+                            user: "candlestoreproject23@gmail.com",
+                            pass: "candles_123"
+                        }
+                    });
+                    let info = await transporter.sendMail({
+                        from: '"Candle Store" <candle@example.com',
+                        to: "ahaddabeh@gmail.com", // Obviously this is going to be customer.email
+                        subject: "Order Confirmation",
+                        text: "Thank you for shopping at Lighthouse Candles"
+                    })
+                    console.log("Message sent: %s", info.messageId)
                 })
             })
             return { success: true, message: "Transaction completed successfully" };
@@ -250,10 +266,12 @@ class CheckoutService {
         const foundProducts = JSON.parse(JSON.stringify(await this.db.Product.findAllWhereIdIn(data.cart_items.map(it => it.id))));
 
         // Make sure we have inventory. Check desired quantity against found products quantity 
-        this._compareCartItemsWithInventory(data.cart_items, foundProducts)
-        if (this._compareCartItemsWithInventory.success === false) {
+        const cartComparison = this._compareCartItemsWithInventory(data.cart_items, foundProducts)
+        if (cartComparison.status === false) {
             // TODO: return an object telling which items are not in stock/dont meet inventory
-            return "Not enough in inventory";
+            return cartComparison.cart_items.filter(item => {
+                item.status === false;
+            });
         }
 
         // Format address info
@@ -274,6 +292,7 @@ class CheckoutService {
             customer = this._setCustomerInfo(data, address, shippingAddress, foundCustomer)
         }
         else {
+            console.log("Customer not found; must create new customer")
             customer = this._setNewCustomerInfo(data, address, shippingAddress);
         }
 
@@ -311,7 +330,7 @@ class CheckoutService {
 
         // console.log("order: ", order)
         // console.log("customer: ", customer);
-        return this._save(customer, order);
+        return this._save(customer, order, cartComparison.cart_items);
     }
 
     _checkout = async (req) => {
