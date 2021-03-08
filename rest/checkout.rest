@@ -5,7 +5,7 @@ Content-Type: application/json
     "customer": {
         "first_name": "Baby",
         "last_name": "Cousins",
-        "email": "baby@example.com",
+        "email": "buns@example.com",
         "phone": "123-456-7890",
         "address": "123 AppleBerry Ave.",
         "city": "Tampa",

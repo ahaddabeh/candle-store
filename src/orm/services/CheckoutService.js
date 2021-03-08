@@ -233,19 +233,24 @@ class CheckoutService {
                 await transaction.afterCommit(async () => {
                     // send email
                     let transporter = nodemailer.createTransport({
-                        service: "gmail",
+                        host: "smtp-mail.outlook.com",
+                        secureConnection: false,
+                        port: 587,
+                        tls: {
+                            ciphers: "SSLv3"
+                        },
                         auth: {
-                            // user: process.env.CU,
-                            // pass: process.env.CP
-                            user: "candlestoreproject23@gmail.com",
-                            pass: "candles_123"
+                            user: process.env.CU,
+                            pass: process.env.CP
+                            // user: "candlestoreproject23@gmail.com",
+                            // pass: ""
                         }
                     });
                     let info = await transporter.sendMail({
-                        from: '"Candle Store" <candle@example.com',
-                        to: "ahaddabeh@gmail.com", // Obviously this is going to be customer.email
+                        from: `${process.env.CU}`,
+                        to: "candlestoreproject23@gmail.com", // Obviously this is going to be customer.email
                         subject: "Order Confirmation",
-                        text: "Thank you for shopping at Lighthouse Candles"
+                        text: "Thank you for shopping at Lighthouse Candles",
                     })
                     console.log("Message sent: %s", info.messageId)
                 })
