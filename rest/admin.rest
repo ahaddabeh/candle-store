@@ -1,0 +1,9 @@
+POST {{baseURL}}/admins
+Content-Type: application/json
+
+{
+    "firstName": "Alaa",
+    "lastName": "Haddabeh",
+    "username": "ahaddabeh",
+    "password": "alaaIsHandsome123"
+}

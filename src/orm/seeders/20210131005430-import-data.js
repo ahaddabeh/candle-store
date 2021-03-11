@@ -64,11 +64,21 @@ module.exports = {
       }
     })
 
+    const admins = data.admins.map(admin => {
+      return {
+        id: admin.id,
+        first_name: admin.first_name,
+        last_name: admin.last_name,
+        username: admin.username,
+        password: admin.password
+      }
+    })
     try {
       await queryInterface.bulkInsert("products", products, {})
       await queryInterface.bulkInsert("categories", categories, {})
       await queryInterface.bulkInsert("orders", orders, {})
       await queryInterface.bulkInsert("customers", customers, {})
+      await queryInterface.bulkInsert("admins", admins, {})
     } catch (error) {
       console.log(error)
     }

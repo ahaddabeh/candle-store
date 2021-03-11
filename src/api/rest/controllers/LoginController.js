@@ -1,8 +1,5 @@
 // const BaseController = require("./BaseController");
-const { CheckoutService } = require("../../../orm/services");
-require("dotenv").config({});
-const Stripe = require("stripe");
-const stripe = Stripe(process.env.SK);
+const { LoginService } = require("../../../orm/services");
 
 class ShoppingCartController {
     constructor() {
@@ -10,7 +7,7 @@ class ShoppingCartController {
 
     checkout = async (req, res) => {
         try {
-            const result = await CheckoutService.checkout(req.body.customer);
+            const result = await LoginService.login(req.body.customer);
             res.sendHttpSuccess(result);
         } catch (error) {
             res.sendHttpError(404, "ShoppingCart controller checkout()", error);

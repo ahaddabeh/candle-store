@@ -3,6 +3,7 @@ const faker = require("faker");
 const fs = require("fs-extra");
 const { ko } = require("faker/lib/locales");
 const { get } = require("http");
+const bcrypt = require("bcrypt");
 
 require("dotenv").config();
 
@@ -10,7 +11,8 @@ const output = {
     products: [],
     categories: [],
     orders: [],
-    customers: []
+    customers: [],
+    admins: []
 }
 
 const getRandomInclusive = (min, max) =>
@@ -90,7 +92,6 @@ const createCustomer = () => ({
     stripe_payment_method_id: faker.random.uuid()
 })
 
-
 const createOrder = () => ({
     id: newId("orders"),
     customer_id: getRandomInclusive(1, output.customers.length),
@@ -104,6 +105,14 @@ const createOrder = () => ({
     card_number: generateCardNumber()
 })
 
+const createAdmin = () => ({
+    id: newId("admins"),
+    first_name: faker.name.findName(),
+    last_name: faker.name.findName(),
+    username: faker.internet.userName(this.first_name),
+    password: faker.internet.password()
+})
+
 for (let i = 0; i < 20; i++) {
     output.categories.push(createCategory())
 }
@@ -115,6 +124,9 @@ for (let i = 0; i < 20; i++) {
 }
 for (let i = 0; i < 20; i++) {
     output.orders.push(createOrder())
+}
+for (let i = 0; i < 2; i++) {
+    output.admins.push(createAdmin())
 }
 
 fs.writeFileSync(
