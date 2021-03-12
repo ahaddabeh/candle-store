@@ -7,3 +7,13 @@ Content-Type: application/json
     "username": "ahaddabeh",
     "password": "alaaIsHandsome123"
 }
+
+###
+
+POST {{baseURL}}/admins/login
+Content-Type: application/json
+
+{
+    "username": "ahaddabeh",
+    "password": "alaaIsHandsome123"
+}

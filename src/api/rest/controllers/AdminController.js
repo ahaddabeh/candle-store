@@ -7,13 +7,6 @@ class AdminController extends BaseController {
         super(model);
     }
 
-    // login = async (req, res) => {
-    //     const user = {
-    //         username: req.body.username,
-    //         password: req.body.password
-    //     }
-    // }
-
     create = async (req, res) => {
         try {
             console.log(req.body);

@@ -12,6 +12,7 @@ const ShoppingCartController = require("./ShoppingCartController");
 const OrderController = require("./OrderController");
 const CustomerController = require("./CustomerController");
 const AdminController = require("./AdminController");
+const LoginController = require("./LoginController");
 module.exports = {
     // Passing the Product model that we imported into the ProductController
     ProductController: new ProductController(Product),
@@ -19,5 +20,6 @@ module.exports = {
     ShoppingCartController: new ShoppingCartController(),
     OrderController: new OrderController(Order),
     CustomerController: new CustomerController(Customer),
-    AdminController: new AdminController(Admin)
+    AdminController: new AdminController(Admin),
+    LoginController: new LoginController()
 }
