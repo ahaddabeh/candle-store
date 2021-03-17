@@ -18,8 +18,11 @@ class LoginService {
             const comparePasswords = await bcrypt.compare(data.password, user.password);
             console.log("result of bcrypt comparison: ", comparePasswords);
             if (comparePasswords) {
-                // const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-                return { status: true, message: "Login successful" }
+                // Access token isn't working
+                console.log("Trying to get access token: ");
+                const accessToken = jwt.sign({ user: user.username }, process.env.ACCESS_TOKEN_SECRET);
+                console.log("Access Token: ", accessToken);
+                return { accessToken, status: true, message: "Login successful" }
                 // We're gonna need an authenticateToken middleware function later 
             }
         }

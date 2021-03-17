@@ -1,0 +1,12 @@
+GET {{baseURL}}/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWhhZGRhYmVoIiwiaWF0IjoxNjE1OTYzMzA2fQ.kakKDlaAEqvgc8s5pzzrJIhmVg_lQtRyQoLiczjvCWo
+
+###
+
+POST {{baseURL}}/admins/login
+Content-Type: application/json
+
+{
+    "username": "ahaddabeh",
+    "password": "alaaIsHandsome123"
+}
