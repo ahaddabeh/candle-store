@@ -1,0 +1,17 @@
+POST {{baseURL}}/admins/login
+Content-Type: application/json
+
+{
+    "username": "ahaddabeh",
+    "password": "alaaIsHandsome123"
+}
+
+###
+
+GET {{baseURL}}/customers/3
+# Authorization: Bearer
+
+###
+
+GET {{baseURL}}/customers?page=1&size=5
+# Authorization: Bearer

@@ -1,4 +1,9 @@
-GET {{baseURL}}/orders
+GET {{baseURL}}/orders?page=1&size=5
+# Authorization: Bearer
+###
+
+GET {{baseURL}}/orders/3
+# Authorization: Bearer 
 
 ###
 
