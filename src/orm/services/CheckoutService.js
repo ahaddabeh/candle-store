@@ -2,6 +2,7 @@ require("dotenv").config({});
 const Stripe = require("stripe");
 const stripe = Stripe(process.env.SK);
 const nodemailer = require("nodemailer");
+// const localStorage = require("node-localstorage");
 class CheckoutService {
     constructor(db) {
         this.db = db;
@@ -118,23 +119,137 @@ class CheckoutService {
     }
 
     _captureStripeTransaction = async (customer, address, shippingAddress, paymentInfo, order) => {
-        const stripePaymentMethod = await stripe.paymentMethods.create({
-            type: 'card',
-            card: {
-                number: paymentInfo.card_number,
-                exp_month: paymentInfo.exp_month,
-                exp_year: paymentInfo.exp_year,
-                cvc: paymentInfo.cvc
+        // const stripePaymentMethod = await stripe.paymentMethods.create({
+        //     type: 'card',
+        //     card: {
+        //         number: paymentInfo.card_number,
+        //         exp_month: paymentInfo.exp_month,
+        //         exp_year: paymentInfo.exp_year,
+        //         cvc: paymentInfo.cvc
+        //     }
+        // });
+
+
+        // // TODO: check if this customer was found in the database and has a stripe customer id 
+        // let stripeCustomer = {};
+        // if (customer.stripe_customer_id) {
+        //     stripeCustomer = await stripe.customers.update(
+        //         customer.stripe_customer_id,
+        //         {
+        //             name: `${customer.first_name} ${customer.last_name}`,
+        //             email: customer.email,
+        //             phone: customer.phone,
+        //             address: {
+        //                 line1: address.address,
+        //                 city: address.city,
+        //                 state: address.state,
+        //                 country: address.country
+        //             },
+        //             shipping: {
+        //                 address: {
+        //                     line1: shippingAddress.shipping_address,
+        //                     city: shippingAddress.shipping_city,
+        //                     country: shippingAddress.shipping_country,
+        //                     state: shippingAddress.shipping_state
+        //                 },
+        //                 name: `${customer.first_name} ${customer.last_name}`
+        //             }
+        //         }
+        //     )
+        // }
+        // else {
+        //     stripeCustomer = await stripe.customers.create({
+        //         name: `${customer.first_name} ${customer.last_name}`,
+        //         email: customer.email,
+        //         phone: customer.phone,
+        //         address: {
+        //             line1: address.address,
+        //             city: address.city,
+        //             state: address.state,
+        //             country: address.country
+        //         },
+        //         shipping: {
+        //             address: {
+        //                 line1: shippingAddress.shipping_address,
+        //                 city: shippingAddress.shipping_city,
+        //                 country: shippingAddress.shipping_country,
+        //                 state: shippingAddress.shipping_state
+        //             },
+        //             name: `${customer.first_name} ${customer.last_name}`
+        //         }
+
+        //     });
+        // }
+
+        // await stripe.paymentMethods.attach(stripePaymentMethod.id, { customer: stripeCustomer.id });
+
+        // const stripePaymentIntent = await stripe.paymentIntents.create({
+        //     customer: stripeCustomer.id,
+        //     payment_method: stripePaymentMethod.id,
+        //     capture_method: "manual",
+        //     amount: +order.total * 100,
+        //     currency: "usd",
+        //     payment_method_types: ["card"]
+        // });
+
+        const confirmed = await stripe.paymentIntents.confirm(stripePaymentIntent.id);
+        const response = await stripe.paymentIntents.capture(stripePaymentIntent.id);
+
+        const stripeChargeId = response.charges.data[0].id;
+        console.log("Charge", stripeChargeId);
+
+
+        return { customer: stripeCustomer, payment_method: stripePaymentMethod, payment_intent: stripePaymentIntent, charge: stripeChargeId };
+    };
+
+    // Make stripe payment method function
+    _getPaymentMethod = async (paymentInfo) => {
+        let result;
+        try {
+            result = await stripe.paymentMethods.create({
+                type: 'card',
+                card: {
+                    number: paymentInfo.card_number,
+                    exp_month: paymentInfo.exp_month,
+                    exp_year: paymentInfo.exp_year,
+                    cvc: paymentInfo.cvc
+                }
+            });
+            return { result, success: true };
+        } catch (error) {
+            return { error, success: false };
+        }
+    }
+    _getCustomer = async (customer, shippingAddress, address) => {
+        try {
+            let result;
+            if (customer.stripe_customer_id) {
+                result = await stripe.customers.update(
+                    customer.stripe_customer_id,
+                    {
+                        name: `${customer.first_name} ${customer.last_name}`,
+                        email: customer.email,
+                        phone: customer.phone,
+                        address: {
+                            line1: address.address,
+                            city: address.city,
+                            state: address.state,
+                            country: address.country
+                        },
+                        shipping: {
+                            address: {
+                                line1: shippingAddress.shipping_address,
+                                city: shippingAddress.shipping_city,
+                                country: shippingAddress.shipping_country,
+                                state: shippingAddress.shipping_state
+                            },
+                            name: `${customer.first_name} ${customer.last_name}`
+                        }
+                    }
+                )
             }
-        });
-
-
-        // TODO: check if this customer was found in the database and has a stripe customer id 
-        let stripeCustomer = {};
-        if (customer.stripe_customer_id) {
-            stripeCustomer = await stripe.customers.update(
-                customer.stripe_customer_id,
-                {
+            else {
+                result = await stripe.customers.create({
                     name: `${customer.first_name} ${customer.last_name}`,
                     email: customer.email,
                     phone: customer.phone,
@@ -153,57 +268,15 @@ class CheckoutService {
                         },
                         name: `${customer.first_name} ${customer.last_name}`
                     }
-                }
-            )
+
+                });
+            }
+            return { result, success: true };
+        } catch (error) {
+            return { error, success: false };
         }
-        else {
-            stripeCustomer = await stripe.customers.create({
-                name: `${customer.first_name} ${customer.last_name}`,
-                email: customer.email,
-                phone: customer.phone,
-                address: {
-                    line1: address.address,
-                    city: address.city,
-                    state: address.state,
-                    country: address.country
-                },
-                shipping: {
-                    address: {
-                        line1: shippingAddress.shipping_address,
-                        city: shippingAddress.shipping_city,
-                        country: shippingAddress.shipping_country,
-                        state: shippingAddress.shipping_state
-                    },
-                    name: `${customer.first_name} ${customer.last_name}`
-                }
-
-            });
-        }
-
-        await stripe.paymentMethods.attach(stripePaymentMethod.id, { customer: stripeCustomer.id });
-
-        const stripePaymentIntent = await stripe.paymentIntents.create({
-            customer: stripeCustomer.id,
-            payment_method: stripePaymentMethod.id,
-            capture_method: "manual",
-            amount: +order.total * 100,
-            currency: "usd",
-            payment_method_types: ["card"]
-        });
-
-        const confirmed = await stripe.paymentIntents.confirm(stripePaymentIntent.id);
-        const response = await stripe.paymentIntents.capture(stripePaymentIntent.id);
-
-        const stripeChargeId = response.charges.data[0].id;
-        console.log("Charge", stripeChargeId);
-
-
-        return { customer: stripeCustomer, payment_method: stripePaymentMethod, payment_intent: stripePaymentIntent, charge: stripeChargeId };
-    };
-
-    // Make stripe payment method function
-
-    _getPaymentIntent = (pm, pi) => {
+    }
+    _getPaymentIntent = async (pm, pi, orderTotal) => {
         let result;
         try {
             if (pi) {
@@ -213,7 +286,7 @@ class CheckoutService {
                 // customer: stripeCustomer.id,
                 payment_method: pm.id,
                 capture_method: "manual",
-                amount: +order.total * 100,
+                amount: +orderTotal * 100,
                 currency: "usd",
                 payment_method_types: ["card"]
             });
@@ -222,6 +295,7 @@ class CheckoutService {
             return { error, success: false };
         }
     }
+
 
 
     _save = async (_customer, order, foundProducts) => {
@@ -302,18 +376,38 @@ class CheckoutService {
         // }
 
         if (!cartComparison.status) {
+            // console.log("Cart comparison");
             return cartComparison;
         }
 
         // TODO: Check to see if card is valid here.
-
-        // Check to see if we have a payment intent in our data object or create a new one
-        const paymentIntent = this._getPaymentIntent(paymentMethod, data.paymentIntent);
-
-        if (!paymentIntent.success) {
-            // Return the error
+        let paymentInfo;
+        try {
+            paymentInfo = this._setPaymentInfo(data);
+        } catch (error) {
+            return { error, message: "Credit card failed" }
         }
 
+        // Format order info to go into our Order table
+        let order = this._setOrderInfo(data);
+        const paymentMethod = await this._getPaymentMethod(paymentInfo);
+        if (!paymentMethod.success) {
+            return paymentMethod.error;
+        }
+        // console.log("Bout to check local storage");
+        // if (localStorage.getItem("paymentIntent")) {
+        //     console.log("Probably broke here");
+        //     data = { ...data, paymentIntent: localStorage.getItem("paymentIntent") };
+        // }
+        // Check to see if we have a payment intent in our data object or create a new one
+        const paymentIntent = await this._getPaymentIntent(paymentMethod, data.paymentIntent, order.total);
+        console.log(paymentIntent);
+        // localStorage.setItem("paymentIntent", paymentIntent.id);
+        if (!paymentIntent.success) {
+            // Return the error
+            console.log("This motherfucker failed");
+            return paymentIntent.error;
+        }
 
         // Format address info
         let address = this._setAddress(data);
@@ -338,22 +432,19 @@ class CheckoutService {
             customer = this._setNewCustomerInfo(data, address, shippingAddress);
         }
 
-        // Boolean value to be put into the _save function's arguments
-        // const saveFound = foundCustomer.id ? true : false;
+        const stripeCustomer = await this._getCustomer(customer, shippingAddress, address);
 
         // Format credit card for stripe
-        let paymentInfo;
-        try {
-            paymentInfo = this._setPaymentInfo(data);
-        } catch (error) {
-            return { error, message: "Credit card failed" }
-        }
 
-        // Format order info to go into our Order table
-        let order = this._setOrderInfo(data);
 
         // Submit payment to stripe
-        let stripePayment = await this._captureStripeTransaction(customer, address, shippingAddress, paymentInfo, order);
+        // let stripePayment = await this._captureStripeTransaction(customer, address, shippingAddress, paymentInfo, order);
+
+        const confirmed = await stripe.paymentIntents.confirm(paymentIntent.id);
+        const response = await stripe.paymentIntents.capture(paymentIntent.id);
+
+        const stripeChargeId = response.charges.data[0].id;
+
         // TODO: if the stripe payment is successful, call the save method and pass the data to it
 
         // TODO: if the stripe payment fails, then return a response saying it failed
@@ -362,14 +453,14 @@ class CheckoutService {
         // console.log(stripePayment);
         customer = {
             ...customer,
-            stripeCustomerId: stripePayment.customer.id,
-            stripePaymentMethodId: stripePayment.payment_method.id,
+            stripeCustomerId: stripeCustomer.customer.id,
+            stripePaymentMethodId: paymentMethod.payment_method.id,
         };
         order = {
             ...order,
-            stripeCustomerId: stripePayment.customer.id,
+            stripeCustomerId: stripeC.customer.id,
             stripePaymentMethodId: stripePayment.payment_method.id,
-            stripeChargeId: await stripePayment.charge,
+            stripeChargeId: stripeChargeId.charge,
             invoiceId: Date.now().toString()
         }
 
@@ -378,45 +469,6 @@ class CheckoutService {
         // console.log("order: ", order)
         // console.log("customer: ", customer);
         return this._save(customer, order, cartComparison.cart_items);
-    }
-
-    _checkout = async (req) => {
-        const customer = await stripe.customers.create(req.body.customer)
-        const paymentMethod = await stripe.paymentMethods.create({ type: 'card', ...req.body.paymentMethod });
-        await stripe.paymentMethods.attach(paymentMethod.id, { customer: customer.id })
-        const cart = req.body.cartItems;
-        const cartTotal = (cartArray) => {
-            let count = 0;
-            for (let i = 0; i < cartArray.length; i++) {
-                if (+cartArray[i].quantity <= 1) {
-                    count += +cartArray[i].price;
-                }
-                else if (+cartArray[i].quantity > 1) {
-                    count += +cartArray[i].price * +cartArray[i].quantity;
-                }
-            }
-            return count;
-        }
-        const paymentIntent = await stripe.paymentIntents.create({
-            customer: customer.id,
-            payment_method: paymentMethod.id,
-            capture_method: "manual",
-            amount: cartTotal(cart) * 100,
-            currency: 'usd',
-            payment_method_types: ['card'],
-        });
-
-        const confirmed = await stripe.paymentIntents.confirm(paymentIntent.id);
-        const response = await stripe.paymentIntents.capture(paymentIntent.id);
-        return { customer, paymentMethod, paymentIntent };
-        // console.log(productCount)
-        // Need to check if any products are using this category
-        // if (productCount > 0) {
-        //     return { success: false, msg: `CategoryId ${id} used by ${productCount} product(s)` }
-        // }
-        // // If no products using the category, delete the category
-        // await this.db.Category.destroy({ where: { id: id } })
-        // return { success: true, msg: `CategoryId ${id} deleted successfully` }
     }
 }
 

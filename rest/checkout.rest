@@ -5,7 +5,7 @@ Content-Type: application/json
     "customer": {
         "first_name": "Baby",
         "last_name": "Cousins",
-        "email": "buns2@example.com",
+        "email": "bun@example.com",
         "phone": "123-456-7890",
         "address": "123 AppleBerry Ave.",
         "city": "Tampa",
@@ -15,7 +15,7 @@ Content-Type: application/json
         "shipping_city": "Tampa",
         "shipping_country": "US",
         "shipping_state": "Florida",
-        "card_number": "4242424242424241",
+        "card_number": "4242424242424242",
         "exp_month": 2,
         "exp_year": 2022,
         "cvc": "314",
