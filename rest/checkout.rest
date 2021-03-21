@@ -5,7 +5,7 @@ Content-Type: application/json
     "customer": {
         "first_name": "Baby",
         "last_name": "Cousins",
-        "email": "buns@example.com",
+        "email": "buns2@example.com",
         "phone": "123-456-7890",
         "address": "123 AppleBerry Ave.",
         "city": "Tampa",
@@ -15,7 +15,7 @@ Content-Type: application/json
         "shipping_city": "Tampa",
         "shipping_country": "US",
         "shipping_state": "Florida",
-        "card_number": "4242424242424242",
+        "card_number": "4242424242424241",
         "exp_month": 2,
         "exp_year": 2022,
         "cvc": "314",
@@ -30,7 +30,7 @@ Content-Type: application/json
                 "id": 10,
                 "price": 13.00,
                 "title": "beatae ut cupiditate",
-                "quantity": 2
+                "quantity": 3
             }
         ]
     }

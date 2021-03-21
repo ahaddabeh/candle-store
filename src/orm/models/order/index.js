@@ -24,15 +24,15 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true
   });
 
-  // const methods = require("./methods")(DataTypes);
-  // for (const attr in methods) {
-  //   Order.prototype[attr] = methods[attr];
-  // }
+  const methods = require("./methods")(DataTypes);
+  for (const attr in methods) {
+    Order.prototype[attr] = methods[attr];
+  }
 
-  // const statics = require("./statics")(Order);
-  // for (const attr in statics) {
-  //   Order[attr] = statics[attr];
-  // }
+  const statics = require("./statics")(Order);
+  for (const attr in statics) {
+    Order[attr] = statics[attr];
+  }
 
   return Order;
 };

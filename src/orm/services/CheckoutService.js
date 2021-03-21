@@ -105,7 +105,8 @@ class CheckoutService {
                     if (cartItems[i].quantity > foundProducts[j].quantityOnHand) {
                         status = false;
                         message = "Not enough in stock for some of the items..."
-                        items.push({ ...foundProduct[j], status: status });
+                        // TODO: Fix up what's returned in the foundProduct part
+                        items.push({ ...foundProducts[j], status: status, desiredQuantity: cartItems[i].quantity });
                     }
                     else {
                         items.push({ ...foundProducts[j], quantityOnHand: foundProducts[j].quantityOnHand - cartItems[i].quantity })
@@ -200,6 +201,28 @@ class CheckoutService {
         return { customer: stripeCustomer, payment_method: stripePaymentMethod, payment_intent: stripePaymentIntent, charge: stripeChargeId };
     };
 
+    // Make stripe payment method function
+
+    _getPaymentIntent = (pm, pi) => {
+        let result;
+        try {
+            if (pi) {
+                result = pi;
+            }
+            result = await stripe.paymentIntents.create({
+                // customer: stripeCustomer.id,
+                payment_method: pm.id,
+                capture_method: "manual",
+                amount: +order.total * 100,
+                currency: "usd",
+                payment_method_types: ["card"]
+            });
+            return { result, success: true };
+        } catch (error) {
+            return { error, success: false };
+        }
+    }
+
 
     _save = async (_customer, order, foundProducts) => {
         let customer = { ..._customer };
@@ -214,7 +237,6 @@ class CheckoutService {
                         ...order,
                         customerId: customer.id
                     }
-                    await this.db.Order.create(orderForDb, { transaction })
                 }
                 else {
                     console.log("Creating customer in db")
@@ -224,8 +246,8 @@ class CheckoutService {
                         ...order,
                         customerId: customer.id
                     }
-                    await this.db.Order.create(orderForDb, { transaction })
                 }
+                await this.db.Order.create(orderForDb, { transaction })
                 // Actual customer id (not the stripe customer id) isn't created until it is actually put into the database
                 console.log("Attempting to update products");
                 await this.db.Product.bulkCreate(foundProducts, { updateOnDuplicate: ["updateAt", "quantityOnHand"], transaction })
@@ -272,18 +294,33 @@ class CheckoutService {
 
         // Make sure we have inventory. Check desired quantity against found products quantity 
         const cartComparison = this._compareCartItemsWithInventory(data.cart_items, foundProducts)
-        if (cartComparison.status === false) {
-            // TODO: return an object telling which items are not in stock/dont meet inventory
-            return cartComparison.cart_items.filter(item => {
-                item.status === false;
-            });
+        // if (cartComparison.status === false) {
+        //     // TODO: return an object telling which items are not in stock/dont meet inventory
+        //     return cartComparison.cart_items.filter(item => {
+        //         item.status === false;
+        //     });
+        // }
+
+        if (!cartComparison.status) {
+            return cartComparison;
         }
+
+        // TODO: Check to see if card is valid here.
+
+        // Check to see if we have a payment intent in our data object or create a new one
+        const paymentIntent = this._getPaymentIntent(paymentMethod, data.paymentIntent);
+
+        if (!paymentIntent.success) {
+            // Return the error
+        }
+
 
         // Format address info
         let address = this._setAddress(data);
 
         // Format shippingAddress info
         let shippingAddress = this._setShippingAddress(data);
+
 
         // Find customer if it exists
         const foundCustomer = JSON.parse(JSON.stringify(await this.db.Customer.findByEmail(data.email)));
@@ -305,16 +342,21 @@ class CheckoutService {
         // const saveFound = foundCustomer.id ? true : false;
 
         // Format credit card for stripe
-        let paymentInfo = this._setPaymentInfo(data);
+        let paymentInfo;
+        try {
+            paymentInfo = this._setPaymentInfo(data);
+        } catch (error) {
+            return { error, message: "Credit card failed" }
+        }
 
         // Format order info to go into our Order table
         let order = this._setOrderInfo(data);
 
         // Submit payment to stripe
         let stripePayment = await this._captureStripeTransaction(customer, address, shippingAddress, paymentInfo, order);
-        // if the stripe payment is successful, call the save method and pass the data to it
+        // TODO: if the stripe payment is successful, call the save method and pass the data to it
 
-        // if the stripe payment fails, then return a response saying it failed
+        // TODO: if the stripe payment fails, then return a response saying it failed
 
         // TODO: Temporary code
         // console.log(stripePayment);

@@ -47,6 +47,7 @@ Object.keys(db).forEach(modelName => {
   if (db[modelName].addScopes) {
     db[modelName].addScopes(db);
   }
+  db[modelName].parseJson = (data) => JSON.parse(JSON.stringify(data));
 });
 
 db.sequelize = sequelize;

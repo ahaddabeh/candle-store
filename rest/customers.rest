@@ -2,16 +2,16 @@ POST {{baseURL}}/admins/login
 Content-Type: application/json
 
 {
-    "username": "ahaddabeh",
-    "password": "alaaIsHandsome123"
+    "username": "{{username}}",
+    "password": "{{password}}"
 }
 
 ###
 
 GET {{baseURL}}/customers/3
-# Authorization: Bearer
+Authorization: Bearer {{token}}
 
 ###
 
 GET {{baseURL}}/customers?page=1&size=5
-# Authorization: Bearer
+Authorization: Bearer {{token}}

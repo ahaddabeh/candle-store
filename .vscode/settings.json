@@ -1,8 +1,12 @@
 {
     "rest-client.environmentVariables": {
         "$shared": {
-            "baseURL": "http://localhost:7210/api"
+            "baseURL": "http://localhost:7210/api",
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWhhZGRhYmVoIiwiaWF0IjoxNjE2Mjc5NjUzfQ.3rNju9dqPPNSf0QaA1HeMuAPkFnYu83o3l8yN7DEsHk"
         },
-        "sandbox": {}
+        "sandbox": {
+            "username": "ahaddabeh",
+            "password": "alaaIsHandsome123"
+        }
     }
 }
