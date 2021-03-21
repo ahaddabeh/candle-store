@@ -2,6 +2,8 @@ require("dotenv").config({});
 const Stripe = require("stripe");
 const stripe = Stripe(process.env.SK);
 const nodemailer = require("nodemailer");
+const cookieParser = require('cookie-parser')
+
 // const localStorage = require("node-localstorage");
 class CheckoutService {
     constructor(db) {
@@ -442,6 +444,8 @@ class CheckoutService {
 
         const confirmed = await stripe.paymentIntents.confirm(paymentIntent.id);
         const response = await stripe.paymentIntents.capture(paymentIntent.id);
+
+        // Remove from storage here
 
         const stripeChargeId = response.charges.data[0].id;
 
