@@ -284,9 +284,7 @@ class CheckoutService {
         let result;
         try {
             if (pi) {
-                console.log("result should've been set to pi");
                 result = pi;
-                // result = await stripe.paymentIntents.update(pi.id);
             }
             else {
                 result = await stripe.paymentIntents.create({
@@ -308,10 +306,9 @@ class CheckoutService {
 
     _save = async (_customer, order, foundProducts) => {
         let customer = { ..._customer };
-        console.log("Did we make it to save function");
         try {
             await this.db.sequelize.transaction(async (transaction) => {
-                // TODO: if this was a foundCustomer and exists in the database, update instead of create
+                // if this was a foundCustomer and exists in the database, update instead of create
                 let orderForDb = {};
                 if (customer.id && customer.id > 0) {
                     console.log("Updating customer in db")
@@ -331,7 +328,6 @@ class CheckoutService {
                     }
                 }
                 await this.db.Order.create(orderForDb, { transaction })
-                // Actual customer id (not the stripe customer id) isn't created until it is actually put into the database
                 console.log("Attempting to update products");
                 await this.db.Product.bulkCreate(foundProducts, { updateOnDuplicate: ["updateAt", "quantityOnHand"], transaction })
 
@@ -347,8 +343,6 @@ class CheckoutService {
                         auth: {
                             user: process.env.CU,
                             pass: process.env.CP
-                            // user: "candlestoreproject23@gmail.com",
-                            // pass: ""
                         }
                     });
                     let info = await transporter.sendMail({
@@ -385,11 +379,10 @@ class CheckoutService {
         // }
 
         if (!cartComparison.status) {
-            // console.log("Cart comparison");
             return cartComparison;
         }
 
-        // TODO: Check to see if card is valid here.
+        // Check to see if card is valid here.
         let paymentInfo;
         try {
             paymentInfo = this._setPaymentInfo(data);
@@ -399,25 +392,27 @@ class CheckoutService {
 
         // Format order info to go into our Order table
         let order = this._setOrderInfo(data);
+
+        // Create paymentMethod here. Card verification will be done here
         const paymentMethod = await this._getPaymentMethod(paymentInfo);
         if (!paymentMethod.success) {
             return paymentMethod.error;
         }
-        console.log("Bout to check local storage");
+
+        // Checking to see if payment_intent already exists in local storage
+        // console.log("Chceking local storage");
         if (store.get("payment_intent")) {
-            console.log("PaymentIntent should still be here:");
-            console.log(store.get("payment_intent"));
             data = { ...data, payment_intent: store.get("payment_intent") };
-            // console.log(data.paymentIntent);
         }
+
         // Check to see if we have a payment intent in our data object or create a new one
         const paymentIntent = await this._getPaymentIntent(paymentMethod.result.id, data.payment_intent, order.total);
-        // console.log(paymentIntent);
         if (!paymentIntent.success) {
             // Return the error
-            console.log("This motherfucker failed");
             return paymentIntent.error;
         }
+
+        // Storing the payment_intent here in case of any mistakes made by the customer later
         store.set("payment_intent", { ...paymentIntent.result });
 
         // Format address info
@@ -429,10 +424,6 @@ class CheckoutService {
 
         // Find customer if it exists
         const foundCustomer = JSON.parse(JSON.stringify(await this.db.Customer.findByEmail(data.email)));
-        console.log("data email: ", data.email);
-        console.log("Found customer:", foundCustomer);
-        // const foundCustomer = await this.db.Customer.findOne({ where: { email: data.email } });
-        // Update customer info if anything changed
         let customer = {};
         if (foundCustomer) {
             console.log("The customer is in the database from before")
@@ -443,29 +434,14 @@ class CheckoutService {
             customer = this._setNewCustomerInfo(data, address, shippingAddress);
         }
 
+        // Creating the customer info for stripe
         const stripeCustomer = await this._getCustomer(customer, shippingAddress, address);
-
-        // Format credit card for stripe
-
-
-        // Submit payment to stripe
-        // let stripePayment = await this._captureStripeTransaction(customer, address, shippingAddress, paymentInfo, order);
-
-
-        // Remove from storage here
-
 
         // const confirmed = await stripe.paymentIntents.confirm(paymentIntent.result.id);
         // const response = await stripe.paymentIntents.capture(paymentIntent.result.id);
         // const stripeChargeId = response.charges.data[0].id;
         // console.log("charge info: ", JSON.parse(JSON.stringify(stripeChargeId)));
-        // TODO: if the stripe payment is successful, call the save method and pass the data to it
 
-        // TODO: if the stripe payment fails, then return a response saying it failed
-
-        // TODO: Temporary code
-        // console.log(stripePayment);
-        // console.log("Make sure you're accessing id's correctly: ", stripeCustomer.result.id)
         customer = {
             ...customer,
             stripeCustomerId: stripeCustomer.result.id,
@@ -479,9 +455,7 @@ class CheckoutService {
             invoiceId: Date.now().toString()
         }
 
-
-        // console.log("order: ", order)
-        // console.log("customer: ", customer);
+        // Sending customer info and order info to the database. If it's successful, payment will be confirmed as well 
         const finalSubmit = await this._save(customer, order, cartComparison.cart_items);
         if (finalSubmit.success) {
             // confirming and capturing after customer and order are added to database
