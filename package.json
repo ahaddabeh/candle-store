@@ -37,6 +37,7 @@
     "nodemailer": "^6.5.0",
     "sequelize": "^6.3.5",
     "sqlite3": "^5.0.0",
+    "store": "^2.0.12",
     "stripe": "^8.135.0"
   },
   "nodemonConfig": {

@@ -26,11 +26,11 @@ module.exports = DataTypes => ({
         type: DataTypes.BOOLEAN,
         field: "status"
     },
-    stripeChargeId: {
-        allowNull: false,
-        type: DataTypes.STRING(25),
-        field: "stripe_charge_id"
-    },
+    // stripeChargeId: {
+    //     allowNull: false,
+    //     type: DataTypes.STRING(25),
+    //     field: "stripe_charge_id"
+    // },
     stripeCustomerId: {
         allowNull: false,
         type: DataTypes.STRING(25),

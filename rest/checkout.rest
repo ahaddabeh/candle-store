@@ -3,9 +3,9 @@ Content-Type: application/json
 
 {
     "customer": {
-        "first_name": "Baby",
-        "last_name": "Cousins",
-        "email": "bun@example.com",
+        "first_name": "Gon",
+        "last_name": "Freaks",
+        "email": "gon@example.com",
         "phone": "123-456-7890",
         "address": "123 AppleBerry Ave.",
         "city": "Tampa",
@@ -30,7 +30,7 @@ Content-Type: application/json
                 "id": 10,
                 "price": 13.00,
                 "title": "beatae ut cupiditate",
-                "quantity": 3
+                "quantity": 1
             }
         ]
     }

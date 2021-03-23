@@ -43,7 +43,7 @@ module.exports = {
         status: order.status,
         total: order.total,
         cart_items: JSON.stringify(order.cart_items),
-        stripe_charge_id: order.stripe_charge_id,
+        // stripe_charge_id: order.stripe_charge_id,
         stripe_customer_id: order.stripe_customer_id,
         stripe_payment_method_id: order.stripe_payment_method_id,
         card_number: order.card_number

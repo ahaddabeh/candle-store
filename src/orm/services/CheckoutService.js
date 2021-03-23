@@ -2,9 +2,11 @@ require("dotenv").config({});
 const Stripe = require("stripe");
 const stripe = Stripe(process.env.SK);
 const nodemailer = require("nodemailer");
-const cookieParser = require('cookie-parser')
-
+const store = require('store');
+const storeEngine = require("store/src/store-engine");
+// const cookieParser = require('cookie-parser')
 // const localStorage = require("node-localstorage");
+
 class CheckoutService {
     constructor(db) {
         this.db = db;
@@ -282,16 +284,20 @@ class CheckoutService {
         let result;
         try {
             if (pi) {
+                console.log("result should've been set to pi");
                 result = pi;
+                // result = await stripe.paymentIntents.update(pi.id);
             }
-            result = await stripe.paymentIntents.create({
-                // customer: stripeCustomer.id,
-                payment_method: pm.id,
-                capture_method: "manual",
-                amount: +orderTotal * 100,
-                currency: "usd",
-                payment_method_types: ["card"]
-            });
+            else {
+                result = await stripe.paymentIntents.create({
+                    // customer: stripeCustomer.id,
+                    payment_method: pm,
+                    capture_method: "manual",
+                    amount: +orderTotal * 100,
+                    currency: "usd",
+                    payment_method_types: ["card"]
+                });
+            }
             return { result, success: true };
         } catch (error) {
             return { error, success: false };
@@ -302,6 +308,7 @@ class CheckoutService {
 
     _save = async (_customer, order, foundProducts) => {
         let customer = { ..._customer };
+        console.log("Did we make it to save function");
         try {
             await this.db.sequelize.transaction(async (transaction) => {
                 // TODO: if this was a foundCustomer and exists in the database, update instead of create
@@ -396,20 +403,22 @@ class CheckoutService {
         if (!paymentMethod.success) {
             return paymentMethod.error;
         }
-        // console.log("Bout to check local storage");
-        // if (localStorage.getItem("paymentIntent")) {
-        //     console.log("Probably broke here");
-        //     data = { ...data, paymentIntent: localStorage.getItem("paymentIntent") };
-        // }
+        console.log("Bout to check local storage");
+        if (store.get("payment_intent")) {
+            console.log("PaymentIntent should still be here:");
+            console.log(store.get("payment_intent"));
+            data = { ...data, payment_intent: store.get("payment_intent") };
+            // console.log(data.paymentIntent);
+        }
         // Check to see if we have a payment intent in our data object or create a new one
-        const paymentIntent = await this._getPaymentIntent(paymentMethod, data.paymentIntent, order.total);
-        console.log(paymentIntent);
-        // localStorage.setItem("paymentIntent", paymentIntent.id);
+        const paymentIntent = await this._getPaymentIntent(paymentMethod.result.id, data.payment_intent, order.total);
+        // console.log(paymentIntent);
         if (!paymentIntent.success) {
             // Return the error
             console.log("This motherfucker failed");
             return paymentIntent.error;
         }
+        store.set("payment_intent", { ...paymentIntent.result });
 
         // Format address info
         let address = this._setAddress(data);
@@ -442,37 +451,48 @@ class CheckoutService {
         // Submit payment to stripe
         // let stripePayment = await this._captureStripeTransaction(customer, address, shippingAddress, paymentInfo, order);
 
-        const confirmed = await stripe.paymentIntents.confirm(paymentIntent.id);
-        const response = await stripe.paymentIntents.capture(paymentIntent.id);
 
         // Remove from storage here
 
-        const stripeChargeId = response.charges.data[0].id;
 
+        // const confirmed = await stripe.paymentIntents.confirm(paymentIntent.result.id);
+        // const response = await stripe.paymentIntents.capture(paymentIntent.result.id);
+        // const stripeChargeId = response.charges.data[0].id;
+        // console.log("charge info: ", JSON.parse(JSON.stringify(stripeChargeId)));
         // TODO: if the stripe payment is successful, call the save method and pass the data to it
 
         // TODO: if the stripe payment fails, then return a response saying it failed
 
         // TODO: Temporary code
         // console.log(stripePayment);
+        // console.log("Make sure you're accessing id's correctly: ", stripeCustomer.result.id)
         customer = {
             ...customer,
-            stripeCustomerId: stripeCustomer.customer.id,
-            stripePaymentMethodId: paymentMethod.payment_method.id,
+            stripeCustomerId: stripeCustomer.result.id,
+            stripePaymentMethodId: paymentMethod.result.id,
         };
         order = {
             ...order,
-            stripeCustomerId: stripeC.customer.id,
-            stripePaymentMethodId: stripePayment.payment_method.id,
-            stripeChargeId: stripeChargeId.charge,
+            stripeCustomerId: stripeCustomer.result.id,
+            stripePaymentMethodId: paymentMethod.result.id,
+            // stripeChargeId: stripeChargeId,
             invoiceId: Date.now().toString()
         }
 
 
-
         // console.log("order: ", order)
         // console.log("customer: ", customer);
-        return this._save(customer, order, cartComparison.cart_items);
+        const finalSubmit = await this._save(customer, order, cartComparison.cart_items);
+        if (finalSubmit.success) {
+            // confirming and capturing after customer and order are added to database
+            await stripe.paymentIntents.confirm(paymentIntent.result.id);
+            await stripe.paymentIntents.capture(paymentIntent.result.id);
+            // removing from local storage since it had to have been successful
+            store.clearAll();
+            return finalSubmit;
+        }
+        console.log("Payment failed and should not have been confirmed:");
+        return finalSubmit;
     }
 }
 
