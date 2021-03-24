@@ -122,90 +122,6 @@ class CheckoutService {
         return { cart_items: items, status, message };
     }
 
-    _captureStripeTransaction = async (customer, address, shippingAddress, paymentInfo, order) => {
-        // const stripePaymentMethod = await stripe.paymentMethods.create({
-        //     type: 'card',
-        //     card: {
-        //         number: paymentInfo.card_number,
-        //         exp_month: paymentInfo.exp_month,
-        //         exp_year: paymentInfo.exp_year,
-        //         cvc: paymentInfo.cvc
-        //     }
-        // });
-
-
-        // // TODO: check if this customer was found in the database and has a stripe customer id 
-        // let stripeCustomer = {};
-        // if (customer.stripe_customer_id) {
-        //     stripeCustomer = await stripe.customers.update(
-        //         customer.stripe_customer_id,
-        //         {
-        //             name: `${customer.first_name} ${customer.last_name}`,
-        //             email: customer.email,
-        //             phone: customer.phone,
-        //             address: {
-        //                 line1: address.address,
-        //                 city: address.city,
-        //                 state: address.state,
-        //                 country: address.country
-        //             },
-        //             shipping: {
-        //                 address: {
-        //                     line1: shippingAddress.shipping_address,
-        //                     city: shippingAddress.shipping_city,
-        //                     country: shippingAddress.shipping_country,
-        //                     state: shippingAddress.shipping_state
-        //                 },
-        //                 name: `${customer.first_name} ${customer.last_name}`
-        //             }
-        //         }
-        //     )
-        // }
-        // else {
-        //     stripeCustomer = await stripe.customers.create({
-        //         name: `${customer.first_name} ${customer.last_name}`,
-        //         email: customer.email,
-        //         phone: customer.phone,
-        //         address: {
-        //             line1: address.address,
-        //             city: address.city,
-        //             state: address.state,
-        //             country: address.country
-        //         },
-        //         shipping: {
-        //             address: {
-        //                 line1: shippingAddress.shipping_address,
-        //                 city: shippingAddress.shipping_city,
-        //                 country: shippingAddress.shipping_country,
-        //                 state: shippingAddress.shipping_state
-        //             },
-        //             name: `${customer.first_name} ${customer.last_name}`
-        //         }
-
-        //     });
-        // }
-
-        // await stripe.paymentMethods.attach(stripePaymentMethod.id, { customer: stripeCustomer.id });
-
-        // const stripePaymentIntent = await stripe.paymentIntents.create({
-        //     customer: stripeCustomer.id,
-        //     payment_method: stripePaymentMethod.id,
-        //     capture_method: "manual",
-        //     amount: +order.total * 100,
-        //     currency: "usd",
-        //     payment_method_types: ["card"]
-        // });
-
-        const confirmed = await stripe.paymentIntents.confirm(stripePaymentIntent.id);
-        const response = await stripe.paymentIntents.capture(stripePaymentIntent.id);
-
-        const stripeChargeId = response.charges.data[0].id;
-        console.log("Charge", stripeChargeId);
-
-
-        return { customer: stripeCustomer, payment_method: stripePaymentMethod, payment_intent: stripePaymentIntent, charge: stripeChargeId };
-    };
-
     // Make stripe payment method function
     _getPaymentMethod = async (paymentInfo) => {
         let result;
@@ -224,6 +140,7 @@ class CheckoutService {
             return { error, success: false };
         }
     }
+
     _getCustomer = async (customer, shippingAddress, address) => {
         try {
             let result;
@@ -280,6 +197,7 @@ class CheckoutService {
             return { error, success: false };
         }
     }
+
     _getPaymentIntent = async (pm, pi, orderTotal) => {
         let result;
         try {
@@ -302,9 +220,21 @@ class CheckoutService {
         }
     }
 
+    _createReceiptConfirmation = (cartItems, total) => {
+        let receipt = "Thank you for shopping at Lighthouse Candles.\nHere is your receipt:";
+        // let cartString;
+        for (let i = 0; i < cartItems.length; i++) {
+            receipt = receipt.concat(`\nItem ${i + 1}\n`);
+            receipt = receipt.concat(`\n\tTitle: ${cartItems[i].title}\n`);
+            receipt = receipt.concat(`\n\tPrice: $${parseFloat(cartItems[i].price).toFixed(2)}\n`);
+            receipt = receipt.concat(`\n\tQuantity: ${cartItems[i].quantity}\n`);
+            receipt = receipt.concat(`\n\-------------------------------------------------\n`);
+        }
+        receipt = receipt.concat(`Total: $${parseFloat(total).toFixed(2)}`);
+        return receipt;
+    }
 
-
-    _save = async (_customer, order, foundProducts) => {
+    _save = async (_customer, order, foundProducts, receipt) => {
         let customer = { ..._customer };
         try {
             await this.db.sequelize.transaction(async (transaction) => {
@@ -347,9 +277,10 @@ class CheckoutService {
                     });
                     let info = await transporter.sendMail({
                         from: `${process.env.CU}`,
-                        to: "candlestoreproject23@gmail.com", // Obviously this is going to be customer.email
+                        // Obviously this is going to be customer.email
+                        to: "candlestoreproject23@gmail.com",
                         subject: "Order Confirmation",
-                        text: "Thank you for shopping at Lighthouse Candles",
+                        text: receipt
                     })
                     console.log("Message sent: %s", info.messageId)
                 })
@@ -371,13 +302,6 @@ class CheckoutService {
 
         // Make sure we have inventory. Check desired quantity against found products quantity 
         const cartComparison = this._compareCartItemsWithInventory(data.cart_items, foundProducts)
-        // if (cartComparison.status === false) {
-        //     // TODO: return an object telling which items are not in stock/dont meet inventory
-        //     return cartComparison.cart_items.filter(item => {
-        //         item.status === false;
-        //     });
-        // }
-
         if (!cartComparison.status) {
             return cartComparison;
         }
@@ -393,6 +317,9 @@ class CheckoutService {
         // Format order info to go into our Order table
         let order = this._setOrderInfo(data);
 
+        // Generating a receipt for order confirmation email
+        const receipt = this._createReceiptConfirmation(data.cart_items, order.total)
+
         // Create paymentMethod here. Card verification will be done here
         const paymentMethod = await this._getPaymentMethod(paymentInfo);
         if (!paymentMethod.success) {
@@ -400,7 +327,6 @@ class CheckoutService {
         }
 
         // Checking to see if payment_intent already exists in local storage
-        // console.log("Chceking local storage");
         if (store.get("payment_intent")) {
             data = { ...data, payment_intent: store.get("payment_intent") };
         }
@@ -420,7 +346,6 @@ class CheckoutService {
 
         // Format shippingAddress info
         let shippingAddress = this._setShippingAddress(data);
-
 
         // Find customer if it exists
         const foundCustomer = JSON.parse(JSON.stringify(await this.db.Customer.findByEmail(data.email)));
@@ -456,7 +381,7 @@ class CheckoutService {
         }
 
         // Sending customer info and order info to the database. If it's successful, payment will be confirmed as well 
-        const finalSubmit = await this._save(customer, order, cartComparison.cart_items);
+        const finalSubmit = await this._save(customer, order, cartComparison.cart_items, receipt);
         if (finalSubmit.success) {
             // confirming and capturing after customer and order are added to database
             await stripe.paymentIntents.confirm(paymentIntent.result.id);
